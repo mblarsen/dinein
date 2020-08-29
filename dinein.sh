@@ -3,7 +3,7 @@
 set -euo pipefail
 
 DINEIN_CONFIG_DIR=${DINEIN_CONFIG_DIR:-$HOME/.config/dinein}
-DIVEIN_DOCKER_PREFIX=${DINEIN_CONFIG_DIR:-dinein}
+DIVEIN_DOCKER_PREFIX=${DIVEIN_DOCKER_PREFIX:-dinein}
 
 PLUGIN_DIR=./plugins
 PLUGINS=()
@@ -97,21 +97,21 @@ function dinein_help() {
 	done
 }
 
-function dinein_util_check_requirements() {
+function dinein_check_requirements() {
 	FAIL=0
 	if ! type jq > /dev/null; then
 		echo ""
 		FAIL=1
-		dinein_util_log_warn "jq is not installed"
-		dinein_util_log "${TGRN}$ ${TOFF}${TBLD}apt install jq${TOFF} or"
-		dinein_util_log "${TGRN}$ ${TOFF}${TBLD}brew install jq${TOFF} to install."
+		dinein_log_warn "jq is not installed"
+		dinein_log "${TGRN}$ ${TOFF}${TBLD}apt install jq${TOFF} or"
+		dinein_log "${TGRN}$ ${TOFF}${TBLD}brew install jq${TOFF} to install."
 	fi
 
 	if ! type docker > /dev/null; then
 		echo ""
 		FAIL=1
-		dinein_util_log_warn "docker is not installed"
-		dinein_util_log "Visit ${TBLD}${TUNL}https://docs.docker.com/get-docker/${TOFF} to install."
+		dinein_log_warn "docker is not installed"
+		dinein_log "Visit ${TBLD}${TUNL}https://docs.docker.com/get-docker/${TOFF} to install."
 	fi
 
 	if [ $FAIL -eq 1 ]; then
@@ -119,106 +119,107 @@ function dinein_util_check_requirements() {
 	fi
 }
 
-function dinein_util_add_help() {
+function dinein_add_help() {
 	echo "  $1 ${TEPH}$2${TOFF}"
 	echo "    $3"
 	echo ""
 }
 
-function dinein_util_ps() {
+function dinein_ps() {
 	docker ps -a -f name=$1
 }
 
-function dinein_util_container_exists() {
+function dinein_container_exists() {
 	CONTAINER_NAME=$1
 	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
-		dinein_util_log_error "Container with name $CONTAINER_NAME doesn't exist'"
+		dinein_log_error "Container with name $CONTAINER_NAME doesn't exist'"
 		exit 1
 	fi
 }
 
-function dinein_util_start() {
+function dinein_start() {
 	CONTAINER_NAME=$1
-	dinein_util_container_exists $CONTAINER_NAME
+	dinein_container_exists $CONTAINER_NAME
 	docker container start $CONTAINER_NAME 1>/dev/null
 }
 
-function dinein_util_stop() {
+function dinein_stop() {
 	CONTAINER_NAME=$1
-	dinein_util_container_exists $CONTAINER_NAME
+	dinein_container_exists $CONTAINER_NAME
 	docker container stop $CONTAINER_NAME 1>/dev/null
 }
 
-function dinein_util_rm() {
+function dinein_rm() {
 	CONTAINER_NAME=$1
-	dinein_util_container_exists $CONTAINER_NAME
+	dinein_container_exists $CONTAINER_NAME
 	docker container stop $CONTAINER_NAME 1>/dev/null
 	docker container rm $CONTAINER_NAME 1>/dev/null
 }
 
-function dinein_util_not_implemented() {
-	dinein_util_log_warn "NOT IMPLEMENTED: $1"
+function dinein_not_implemented() {
+	dinein_log_warn "NOT IMPLEMENTED: $1"
 }
 
-function dinein_util_unknown_command() {
-	dinein_util_log_error "UNKNOWN COMMAND: $@"
+function dinein_unknown_command() {
+	dinein_log_error "UNKNOWN COMMAND: $@"
 }
 
-function dinein_util_local() {
+function dinein_local() {
 	local PROJECT_FILE="$(pwd)/.dinein"
 	if [ -f $PROJECT_FILE ]; then
 		source $PROJECT_FILE
 	fi
 }
 
-function dinein_util_log() {
+function dinein_log() {
 	echo $1
 }
 
-function dinein_util_log_error() {
+function dinein_log_error() {
 	COLOR=${2:-$TERR}
 	echo
 	echo "  ${COLOR}$1${TOFF}"
 	echo
 }
 
-function dinein_util_log_warn() {
+function dinein_log_warn() {
 	COLOR=${2:-$TWRN}
 	echo ${COLOR}$1${TOFF}
 }
 
-function dinein_util_log_header() {
+function dinein_log_header() {
 	COLOR=${2:-$TBLD}
 	echo ${COLOR}$1${TOFF}
 }
 
-function dinein_util_create_config_dir() {
+function dinein_create_config_dir() {
 	mkdir -p "$DINEIN_CONFIG_DIR/$1"
 	echo "$DINEIN_CONFIG_DIR/$1"
 }
 
 function dinein_bootstrap() {
-	dinein_util_check_requirements
-	dinein_util_local
+	dinein_check_requirements
+	dinein_local
 	local CMD=${1:-""}
 	local SUB=${2:-""}
 	local ARGS=${@:3}
 	case "$CMD" in
 		"init")
-			local PROJECT_FILE="$(pwd)/.dinein"
 			dinein_help_header
+			local PROJECT_FILE="$(pwd)/.dinein"
 			if [ ! -f $PROJECT_FILE ]; then
-				dinein_util_log_header "Creating .dinein project file. Edit it and run init again."
-				dinein_util_log_header "You can see list of services by running 'dinein list'"
-				dinein_util_log ""
-				dinein_util_log "  .dinein"
+				dinein_log_header "Creating .dinein project file. Edit it and run init again."
+				dinein_log_header "You can see list of services by running 'dinein list'"
+				dinein_log ""
+				dinein_log "  .dinein"
 				cat <<-TEMPLATE > ".dinein"
 				DINEIN_PROJECT="project_code"
 				DINEIN_SERVICES=(mysql redis)
 TEMPLATE
 			else
+				dinein_log "Initializing services ${DINEIN_SERVICES[@]}"
 				for SERVICE in ${DINEIN_SERVICES[@]}; do
-					PLUGIN_INIT="dinein_plugin_${PLUGIN}_init"
+					PLUGIN_INIT="dinein_plugin_${SERVICE}_init"
 					if type $PLUGIN_INIT &> /dev/null; then
 						$PLUGIN_INIT
 					fi
@@ -226,7 +227,7 @@ TEMPLATE
 			fi
 			;;
 		"ps")
-			dinein_util_ps $DIVEIN_DOCKER_PREFIX
+			dinein_ps $DIVEIN_DOCKER_PREFIX
 			;;
 		"config")
 			dinein_config $SUB $ARGS
@@ -250,7 +251,7 @@ TEMPLATE
 
 			if [ $FOUND -eq 0 ]; then
 				dinein_help $CMD $SUB
-				dinein_util_unknown_command $CMD $SUB
+				dinein_unknown_command $CMD $SUB
 			fi
 			;;
 	esac
