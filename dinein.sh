@@ -5,6 +5,7 @@ set -euo pipefail
 DINEIN_CONFIG_DIR=${DINEIN_CONFIG_DIR:-$HOME/.config/dinein}
 DIVEIN_DOCKER_PREFIX=${DIVEIN_DOCKER_PREFIX:-dinein}
 
+CADDY_VERSON="alpine"
 DINEIN_ROOT=$(dirname "$(readlink -f "$0")")
 PLUGIN_DIR=$DINEIN_ROOT/plugins
 PLUGINS=()
@@ -63,6 +64,60 @@ function dinein_help_header() {
 		figlet -tf slant "Dine-in ( )" | sed 's/^/   /'
 		echo $TOFF
 	fi
+}
+
+function dinein_serve() {
+	PORT=${PORT:-80}
+	HTTPS_PORT=${HTTPS_PORT:-443}
+	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_caddy
+	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
+		docker run \
+			--name ${CONTAINER_NAME} \
+			-p $PORT:80 \
+			-p $HTTPS_PORT:443 \
+			-v ${CONTAINER_NAME}_data:/data \
+			-v ${CONTAINER_NAME}_config:/config \
+			-d caddy:$CADDY_VERSON 
+	else
+		dinein_log "Caddy existed: booting"
+		dinein_start $CONTAINER_NAME
+	fi
+
+	dinein_reload_server
+}
+
+function dinein_generate_site() {
+	# E.g. 127.0.0.1:8000
+	local FILE=$1
+	local FILE_PATH="$(dinein_create_config_dir "caddy/sites")/$FILE"
+	local SITE=$2
+	local ROOT=$3
+	local HOST=$4
+	# TODO deal with root
+	cat <<TEMPLATE > ${FILE_PATH}
+https://$SITE {
+    root * $ROOT 
+    tls internal
+    reverse_proxy $HOST {
+        header_down Access-Control-Allow-Origin *
+    }
+}
+TEMPLATE
+	dinein_log $FILE_PATH
+	cat $FILE_PATH
+}
+
+function dinein_rebuild_caddyfile() {
+	set -x
+	CADDY_FILE="$(dinein_create_config_dir caddy)/Caddyfile"
+	CADDY_SITES=$(ls -d $(dinein_create_config_dir "caddy/sites")/*)
+	cat $CADDY_SITES > $CADDY_FILE
+}
+
+function dinein_reload_server() {
+	dinein_rebuild_caddyfile
+	CADDY_FILE="$(dinein_create_config_dir caddy)/Caddyfile"
+	docker exec ${DIVEIN_DOCKER_PREFIX}_caddy caddy reload --config $CADDY_FILE --adapter caddyfile
 }
 
 function dinein_help() {
@@ -172,6 +227,7 @@ function dinein_unknown_command() {
 function dinein_local() {
 	local PROJECT_FILE="$(pwd)/.dinein"
 	if [ -f $PROJECT_FILE ]; then
+		dinein_log "Sourcing project file $PROJECT_FILE"
 		source $PROJECT_FILE
 	fi
 }
@@ -231,7 +287,7 @@ TEMPLATE
 			fi
 			;;
 		"serve")
-			dinein_not_implemented serve
+			dinein_serve
 			;;
 		"ps")
 			dinein_ps $DIVEIN_DOCKER_PREFIX
