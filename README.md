@@ -16,3 +16,15 @@ npx degit https://github.com/mblarsen/dinein.git
 # Usage
 
 ![usage](https://github.com/mblarsen/dinein/blob/master/usage.png)
+
+Alias dine for easy usage:
+
+```shell
+alias dine="/path/to/dinein/dinein.sh"
+```
+
+Commit your `.dinein` file with your project to easily recreate the services on another system.
+
+```shell
+dine init
+```
