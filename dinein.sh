@@ -65,16 +65,6 @@ function dinein_help_header() {
 function dinein_help() {
 	dinein_help_header 
 	echo ""
-	echo "  ${TUNL}BACKGROUND$TOFF:"
-	echo ""
-	echo "  Dine-in is a lighweight development management tool that makes use"
-	echo "  of docker to provide services such as MySQL, Redis, and so on."
-	echo "  Dine-in is pluggable so you can add new service types by creating"
-	echo "  plugins."
-	echo ""
-	echo "  ps: the inspiration for this tool came from watching the announcement"
-	echo "      of Takeout—a similar tool based on Valet. ${TOFF}"
-	echo ""
 	echo "  ${TUNL}USAGE$TOFF:"
 	echo ""
 	echo "  ${TBLD}init$TOFF"
