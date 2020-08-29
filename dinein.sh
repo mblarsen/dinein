@@ -73,6 +73,9 @@ function dinein_help() {
 	echo "    Creates required services based ${TBLD}.dinein$TOFF file. A template"
 	echo "    file is created if your project doesn't contain one."
 	echo ""
+	echo "  ${TBLD}serve$TOFF"
+	echo "    Start serve. Link a website using one of the server plugins."
+	echo ""
 	echo "  ${TBLD}ps$TOFF"
 	echo "    Show container status"
 	echo ""
@@ -226,6 +229,9 @@ TEMPLATE
 					fi
 				done
 			fi
+			;;
+		"serve")
+			dinein_not_implemented serve
 			;;
 		"ps")
 			dinein_ps $DIVEIN_DOCKER_PREFIX
