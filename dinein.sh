@@ -217,7 +217,6 @@ function dinein_bootstrap() {
 				DINEIN_SERVICES=(mysql redis)
 TEMPLATE
 			else
-				dinein_log "Initializing services ${DINEIN_SERVICES[@]}"
 				for SERVICE in ${DINEIN_SERVICES[@]}; do
 					PLUGIN_INIT="dinein_plugin_${SERVICE}_init"
 					if type $PLUGIN_INIT &> /dev/null; then
