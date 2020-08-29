@@ -17,6 +17,8 @@ npx degit https://github.com/mblarsen/dinein.git
 
 ![usage](https://github.com/mblarsen/dinein/blob/master/usage.png)
 
+![demo](https://github.com/mblarsen/dinein/blob/master/demo.gif)
+
 Alias dine for easy usage:
 
 ```shell
