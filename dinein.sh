@@ -5,7 +5,8 @@ set -euo pipefail
 DINEIN_CONFIG_DIR=${DINEIN_CONFIG_DIR:-$HOME/.config/dinein}
 DIVEIN_DOCKER_PREFIX=${DIVEIN_DOCKER_PREFIX:-dinein}
 
-PLUGIN_DIR=./plugins
+DINEIN_ROOT=$(dirname "$(readlink -f "$0")")
+PLUGIN_DIR=$DINEIN_ROOT/plugins
 PLUGINS=()
 SERVERS=()
 SERVICES=()
@@ -40,6 +41,8 @@ else
 fi
 
 function dinein_config() {
+	echo "Dive-in root:"
+	echo "  $DINEIN_ROOT"
 	echo "Dive-in config directory:"
 	echo "  $DINEIN_CONFIG_DIR ${TDIM}(\$DINEIN_CONFIG_DIR)$TOFF"
 	echo "Docker prefix:"
@@ -58,13 +61,12 @@ function dinein_help_header() {
 	if type figlet > /dev/null; then
 		echo -n $TEPH
 		figlet -tf slant "Dine-in ( )" | sed 's/^/   /'
-		echo -n $TOFF
+		echo $TOFF
 	fi
 }
 
 function dinein_help() {
 	dinein_help_header 
-	echo ""
 	echo "  ${TUNL}USAGE$TOFF:"
 	echo ""
 	echo "  ${TBLD}init$TOFF"
