@@ -12,7 +12,7 @@ function dinein_plugin_mailhog_add() {
 	PORT=${3:-1025}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
 	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
-		echo "${TBLD}${TGRN}Creating $CONTAINER_NAME${TOFF}"
+		dinein_log "Creating container"
 		docker run \
 			--name $CONTAINER_NAME \
 			-p $PORT:1025 \
