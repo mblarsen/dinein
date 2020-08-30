@@ -1,4 +1,4 @@
-# dinein
+# Dine-in 🏠
 
 A lightweight development tool similar to Tighten's
 [Takeout](https://github.com/tightenco/takeout); same goal, simpler
