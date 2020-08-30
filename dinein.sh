@@ -70,6 +70,7 @@ function dinein_serve() {
 	PORT=${PORT:-80}
 	HTTPS_PORT=${HTTPS_PORT:-443}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_caddy
+	CADDY_FILE="$(dinein_create_config_dir caddy)/Caddyfile"
 	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
 		docker run \
 			--name ${CONTAINER_NAME} \
@@ -77,7 +78,9 @@ function dinein_serve() {
 			-p $HTTPS_PORT:443 \
 			-v ${CONTAINER_NAME}_data:/data \
 			-v ${CONTAINER_NAME}_config:/config \
+			-v ${CADDY_FILE}:/etc/caddy/Caddyfile \
 			-d caddy:$CADDY_VERSON 
+			
 	else
 		dinein_log "Caddy existed: booting"
 		dinein_start $CONTAINER_NAME
@@ -108,7 +111,6 @@ TEMPLATE
 }
 
 function dinein_rebuild_caddyfile() {
-	set -x
 	CADDY_FILE="$(dinein_create_config_dir caddy)/Caddyfile"
 	CADDY_SITES=$(ls -d $(dinein_create_config_dir "caddy/sites")/*)
 	cat $CADDY_SITES > $CADDY_FILE
