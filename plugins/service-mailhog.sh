@@ -10,12 +10,14 @@ function dinein_plugin_mailhog_add() {
 	NAME=${1-mailhog}
 	VERSON=${2:-latest}
 	PORT=${3:-1025}
+	UI_PORT=${4:-8025}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
 	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
 		dinein_log "Creating container"
 		docker run \
 			--name $CONTAINER_NAME \
 			-p $PORT:1025 \
+			-p $UI_PORT:8025 \
 			-d mailhog/mailhog:$VERSON
 	fi
 
