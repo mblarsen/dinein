@@ -3,7 +3,7 @@
 PLUGIN_NAME="Built-in PHP server"
 PLUGIN_CMD="php"
 PLUGIN_SERVICE=false
-PLUGIN_SERVER=true
+PLUGIN_HOST=true
 
 function dinein_plugin_php_add_help() {
 	dinein_add_help "php link" "name" "Link a new website."

@@ -9,7 +9,7 @@ CADDY_VERSON="alpine"
 DINEIN_ROOT=$(dirname "$(readlink -f "$0")")
 PLUGIN_DIR=$DINEIN_ROOT/plugins
 PLUGINS=()
-SERVERS=()
+HOSTS=()
 SERVICES=()
 
 if [[ "$TERM" != "dumb" ]] && [[ "$TERM" != "" ]]; then
@@ -50,12 +50,10 @@ function dinein_config() {
 	echo "  $DIVEIN_DOCKER_PREFIX ${TDIM}(\$DIVEIN_DOCKER_PREFIX)$TOFF"
 	echo "Plugin directory:"
 	echo "  $PLUGIN_DIR"
-	echo "Plugins:"
-	echo "  ${PLUGINS[@]}"
-	echo "Servers:"
-	echo "  ${SERVERS[@]}"
-	echo "Services:"
+	echo "Service plugins:"
 	echo "  ${SERVICES[@]}"
+	echo "Host plugins:"
+	echo "  ${HOSTS[@]}"
 }
 
 function dinein_help_header() {
@@ -85,7 +83,6 @@ function dinein_serve() {
 		dinein_log "Caddy existed: booting"
 		dinein_start $CONTAINER_NAME
 	fi
-
 	dinein_reload_server
 }
 
@@ -229,7 +226,7 @@ function dinein_unknown_command() {
 function dinein_local() {
 	local PROJECT_FILE="$(pwd)/.dinein"
 	if [ -f $PROJECT_FILE ]; then
-		dinein_log "Sourcing project file $PROJECT_FILE"
+		dinein_log_warn "Sourcing project file $(basename $PROJECT_FILE)"
 		source $PROJECT_FILE
 	fi
 }
@@ -328,8 +325,8 @@ for PLUGIN in $(ls $PLUGIN_DIR); do
   if [[ "$PLUGIN_SERVICE" == "true" ]]; then
 	  SERVICES+=($PLUGIN_CMD)
   fi
-  if [[ "$PLUGIN_SERVER" == "true" ]]; then
-	  SERVERS+=($PLUGIN_CMD)
+  if [[ "$PLUGIN_HOST" == "true" ]]; then
+	  HOSTS+=($PLUGIN_CMD)
   fi
 done
 

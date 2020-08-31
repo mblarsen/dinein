@@ -3,7 +3,7 @@
 PLUGIN_NAME="Mailhog"
 PLUGIN_CMD="mailhog"
 PLUGIN_SERVICE=true
-PLUGIN_SERVER=false
+PLUGIN_HOST=false
 
 function dinein_plugin_mailhog_add() {
 	dinein_log_header "Starting mailhog service"

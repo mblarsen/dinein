@@ -3,7 +3,7 @@
 PLUGIN_NAME="Laravel artisan serve"
 PLUGIN_CMD="laravel"
 PLUGIN_SERVICE=false
-PLUGIN_SERVER=true
+PLUGIN_HOST=true
 
 function dinein_plugin_laravel_link() {
 	NAME=${1:-$DINEIN_PROJECT}

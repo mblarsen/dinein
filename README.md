@@ -17,7 +17,7 @@ Philosophy
   [nvm](https://github.com/nvm-sh/nvm) and so on to manage your language
 * Use service plugins to add functionality, e.g. to clear redit cache or create a new
   database (not the server)
-* Use server plugins to link and unlink websites. Comes with php and laravel.
+* Use host plugins to link and unlink websites. Comes with php and laravel.
 
 **STILL UNDER DEVELOPMENT**
 

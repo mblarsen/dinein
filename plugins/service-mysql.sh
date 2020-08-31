@@ -3,7 +3,7 @@
 PLUGIN_NAME="MySQL"
 PLUGIN_CMD="mysql"
 PLUGIN_SERVICE=true
-PLUGIN_SERVER=false
+PLUGIN_HOST=false
 
 function dinein_plugin_mysql_add() {
 	dinein_log_header "Starting mysql service"

@@ -3,7 +3,7 @@
 PLUGIN_NAME="Redis"
 PLUGIN_CMD="redis"
 PLUGIN_SERVICE=true
-PLUGIN_SERVER=false
+PLUGIN_HOST=false
 
 function dinein_plugin_redis_add() {
 	dinein_log_header "Starting redis service"
