@@ -305,7 +305,7 @@ TEMPLATE
 				dinein::log_warn "Run 'dine init' before upping the services"
 			fi;
 			for SERVICE in ${DINEIN_SERVICES[@]}; do
-				PLUGIN_INIT="dinein::plugin_${SERVICE}_init"
+				PLUGIN_INIT="dinein::${SERVICE}::init"
 				if type $PLUGIN_INIT &> /dev/null; then
 					$PLUGIN_INIT
 				fi
@@ -345,7 +345,7 @@ TEMPLATE
 			for PLUGIN in ${PLUGINS[@]}; do
 				if [[ "$PLUGIN" == "$CMD" ]]; then
 					FOUND=1
-					EXE="dinein::plugin_$PLUGIN"
+					EXE="dinein::$PLUGIN::run"
 					$EXE $SUB $ARGS
 				fi
 			done

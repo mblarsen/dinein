@@ -5,7 +5,7 @@ PLUGIN_CMD="redis"
 PLUGIN_SERVICE=true
 PLUGIN_HOST=false
 
-function dinein::plugin_redis_add() {
+function dinein::redis::add() {
 	NAME=${1-redis}
 	VERSON=${2:-latest}
 	PORT=${3:-6379}
@@ -29,7 +29,7 @@ TEMPLATE
 	fi
 }
 
-function dinein::plugin_redis_stop() {
+function dinein::redis::stop() {
 	dinein::log_header "Stopping redis service"
 	NAME=${1:-"redis"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
@@ -37,7 +37,7 @@ function dinein::plugin_redis_stop() {
 	dinein::log "Service stopped"
 }
 
-function dinein::plugin_redis_rm() {
+function dinein::redis::rm() {
 	dinein::log_header "Removing redis service"
 	NAME=${1:-"redis"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
@@ -45,25 +45,25 @@ function dinein::plugin_redis_rm() {
 	dinein::log "Service removed"
 }
 
-function dinein::plugin_redis_add_help() {
+function dinein::redis::add_help() {
 	dinein::add_help "redis clear" "name=redis" "Clear the cache."
 }
 
-function dinein::plugin_redis_init() {
+function dinein::redis::init() {
 	# TODO use data from .dinein
-	dinein::plugin_redis_add
+	dinein::redis::add
 }
 
 function dinein::plugin_redis() {
 	case $1 in
 		add|start)
-			dinein::plugin_redis_add ${@:2}
+			dinein::redis::add ${@:2}
 			;;
 		stop)
 			dinein::not_implemented $1
 			;;
 		rm)
-			dinein::plugin_redis_rm ${@:2}
+			dinein::redis::rm ${@:2}
 			;;
 		clear)
 			dinein::not_implemented $1

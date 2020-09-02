@@ -5,12 +5,12 @@ PLUGIN_CMD="php"
 PLUGIN_SERVICE=false
 PLUGIN_HOST=true
 
-function dinein::plugin_php_add_help() {
+function dinein::php::add_help() {
 	dinein::add_help "php link" "name" "Link a new website."
 	dinein::add_help "php unlink" "name" "Remove a new website."
 }
 
-function dinein::plugin_php() {
+function dinein::php::run() {
 	case $1 in
 		link)
 			dinein::not_implemented $1

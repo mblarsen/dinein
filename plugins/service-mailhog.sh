@@ -5,7 +5,7 @@ PLUGIN_CMD="mailhog"
 PLUGIN_SERVICE=true
 PLUGIN_HOST=false
 
-function dinein::plugin_mailhog_add() {
+function dinein::mailhog::add() {
 	NAME=${1-mailhog}
 	VERSON=${2:-latest}
 	PORT=${3:-1025}
@@ -23,7 +23,7 @@ function dinein::plugin_mailhog_add() {
 	fi
 }
 
-function dinein::plugin_mailhog_stop() {
+function dinein::mailhog::stop() {
 	dinein::log_header "Stopping mailhog service"
 	NAME=${1:-"mailhog"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
@@ -31,7 +31,7 @@ function dinein::plugin_mailhog_stop() {
 	dinein::log "Service stopped"
 }
 
-function dinein::plugin_mailhog_rm() {
+function dinein::mailhog::rm() {
 	dinein::log_header "Removing mailhog service"
 	NAME=${1:-"mailhog"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
@@ -39,21 +39,21 @@ function dinein::plugin_mailhog_rm() {
 	dinein::log "Service removed"
 }
 
-function dinein::plugin_mailhog_init() {
+function dinein::mailhog::init() {
 	# TODO use data from .dinein
-	dinein::plugin_mailhog_add
+	dinein::mailhog::add
 }
 
-function dinein::plugin_mailhog() {
+function dinein::mailhog::run() {
 	case $1 in
 		add|start)
-			dinein::plugin_mailhog_add ${@:2}
+			dinein::mailhog::add ${@:2}
 			;;
 		stop)
 			dinein::not_implemented $1
 			;;
 		rm)
-			dinein::plugin_mailhog_rm ${@:2}
+			dinein::mailhog::rm ${@:2}
 			;;
 		ps)
 			dinein::ps mailhog${2:@}

@@ -5,7 +5,7 @@ PLUGIN_CMD="laravel"
 PLUGIN_SERVICE=false
 PLUGIN_HOST=true
 
-function dinein::plugin_laravel_link() {
+function dinein::laravel::link() {
 	DINEIN_PROJECT=${1:-${DINEIN_PROJECT:-""}}
 
 	if [[ "$DINEIN_PROJECT" == "" ]]; then
@@ -21,7 +21,7 @@ function dinein::plugin_laravel_link() {
 	dinein::log "Linked site"
 }
 
-function dinein::plugin_laravel_unlink() {
+function dinein::laravel::unlink() {
 	DINEIN_PROJECT=${1:-${DINEIN_PROJECT:-""}}
 
 	if [[ "$DINEIN_PROJECT" == "" ]]; then
@@ -33,18 +33,18 @@ function dinein::plugin_laravel_unlink() {
 	dinein::log "Removed site"
 }
 
-function dinein::plugin_laravel_add_help() {
+function dinein::laravel::add_help() {
 	dinein::add_help "laravel link" "name [site] [backend] [root]" "Link a new website."
 	dinein::add_help "laravel unlink" "name" "Remove a new website."
 }
 
-function dinein::plugin_laravel() {
+function dinein::laravel::run() {
 	case $1 in
 		link)
-			dinein::plugin_laravel_link ${@:2}
+			dinein::laravel::link ${@:2}
 			;;
 		unlink)
-			dinein::plugin_laravel_unlink ${@:2}
+			dinein::laravel::unlink ${@:2}
 			;;
 		*)
 			dinein::unknown_command laravel $1

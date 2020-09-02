@@ -5,7 +5,7 @@ PLUGIN_CMD="mysql"
 PLUGIN_SERVICE=true
 PLUGIN_HOST=false
 
-function dinein::plugin_mysql_add() {
+function dinein::mysql::add() {
 	NAME=${1:-"mysql"}
 	VERSON=${2:-latest}
 	PORT=${3:-3306}
@@ -25,40 +25,40 @@ function dinein::plugin_mysql_add() {
 	fi
 }
 
-function dinein::plugin_mysql_stop() {
+function dinein::mysql::stop() {
 	NAME=${1:-"mysql"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
 	dinein::stop $CONTAINER_NAME
 }
 
-function dinein::plugin_mysql_rm() {
+function dinein::mysql::rm() {
 	NAME=${1:-"mysql"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
 	dinein::rm $CONTAINER_NAME
 }
 
-function dinein::plugin_mysql_add_help() {
+function dinein::mysql::add_help() {
 	dinein::add_help "mysql db" "name=mysql database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
 }
 
-function dinein::plugin_mysql_init() {
+function dinein::mysql::init() {
 	# TODO use data from .dinein
-	dinein::plugin_mysql_add
+	dinein::mysql::add
 	if [ -z $DINEIN_PROJECT ]; then
 		echo "Create database"
 	fi
 }
 
-function dinein::plugin_mysql() {
+function dinein::mysql::run() {
 	case $1 in
 		add|start)
-			dinein::plugin_mysql_add ${@:2}
+			dinein::mysql::add ${@:2}
 			;;
 		stop)
-			dinein::plugin_mysql_stop ${@:2}
+			dinein::mysql::stop ${@:2}
 			;;
 		rm)
-			dinein::plugin_mysql_rm ${@:2}
+			dinein::mysql::rm ${@:2}
 			;;
 		db)
 			dinein::not_implemented $1
