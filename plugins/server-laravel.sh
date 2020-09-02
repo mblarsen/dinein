@@ -17,7 +17,7 @@ function dinein::laravel::link() {
 	ROOT=${4:-"$(pwd)/public"}
 
 	dinein::log_header "Linking site $DINEIN_PROJECT → $DINEIN_SITE [$DINEIN_BACKEND]"
-	dinein::generate_site $DINEIN_PROJECT $DINEIN_SITE $ROOT $DINEIN_BACKEND
+	dinein::core::site::generate $DINEIN_PROJECT $DINEIN_SITE $ROOT $DINEIN_BACKEND
 	dinein::log "Linked site"
 }
 
@@ -29,7 +29,7 @@ function dinein::laravel::unlink() {
 	fi
 
 	dinein::log_header "Removing site $DINEIN_PROJECT"
-	dinein::remove_site $DINEIN_PROJECT
+	dinein::core::site::remove $DINEIN_PROJECT
 	dinein::log "Removed site"
 }
 

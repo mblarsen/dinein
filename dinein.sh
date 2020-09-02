@@ -64,7 +64,7 @@ function dinein::help_header() {
 	fi
 }
 
-function dinein::generate_site() {
+function dinein::core::site::generate() {
 	# E.g. 127.0.0.1:8000
 	local FILE=$1
 	local FILE_PATH="$(dinein::create_config_dir "caddy/sites")/$FILE"
@@ -84,7 +84,7 @@ TEMPLATE
 	dinein::rebuild_caddyfile
 }
 
-function dinein::remove_site() {
+function dinein::core::site::remove() {
 	local FILE=$1
 	local FILE_PATH="$(dinein::create_config_dir "caddy/sites")/$FILE"
 	[ -f $FILE_PATH ] && rm $FILE_PATH
