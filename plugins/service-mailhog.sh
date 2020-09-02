@@ -6,7 +6,6 @@ PLUGIN_SERVICE=true
 PLUGIN_HOST=false
 
 function dinein_plugin_mailhog_add() {
-	dinein_log_header "Starting mailhog service"
 	NAME=${1-mailhog}
 	VERSON=${2:-latest}
 	PORT=${3:-1025}
@@ -19,9 +18,9 @@ function dinein_plugin_mailhog_add() {
 			-p $PORT:1025 \
 			-p $UI_PORT:8025 \
 			-d mailhog/mailhog:$VERSON
+	else
+		dinein_start $CONTAINER_NAME
 	fi
-
-	dinein_log "Service is ready"
 }
 
 function dinein_plugin_mailhog_stop() {

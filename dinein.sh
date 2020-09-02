@@ -64,28 +64,6 @@ function dinein_help_header() {
 	fi
 }
 
-function dinein_serve() {
-	PORT=${PORT:-80}
-	HTTPS_PORT=${HTTPS_PORT:-443}
-	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_caddy
-	CADDY_FILE="$(dinein_create_config_dir caddy)/Caddyfile"
-	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
-		docker run \
-			--name ${CONTAINER_NAME} \
-			-p $PORT:80 \
-			-p $HTTPS_PORT:443 \
-			-v ${CONTAINER_NAME}_data:/data \
-			-v ${CONTAINER_NAME}_config:/config \
-			-v ${CADDY_FILE}:/etc/caddy/Caddyfile \
-			-d caddy:$CADDY_VERSON 
-			
-	else
-		dinein_log "Caddy existed: booting"
-		dinein_start $CONTAINER_NAME
-	fi
-	dinein_reload_server
-}
-
 function dinein_generate_site() {
 	# E.g. 127.0.0.1:8000
 	local FILE=$1
@@ -103,20 +81,20 @@ https://$SITE {
     }
 }
 TEMPLATE
-	dinein_log $FILE_PATH
-	cat $FILE_PATH
+	dinein_rebuild_caddyfile
+}
+
+function dinein_remove_site() {
+	local FILE=$1
+	local FILE_PATH="$(dinein_create_config_dir "caddy/sites")/$FILE"
+	[ -f $FILE_PATH ] && rm $FILE_PATH
+	dinein_rebuild_caddyfile
 }
 
 function dinein_rebuild_caddyfile() {
 	CADDY_FILE="$(dinein_create_config_dir caddy)/Caddyfile"
 	CADDY_SITES=$(ls -d $(dinein_create_config_dir "caddy/sites")/*)
 	cat $CADDY_SITES > $CADDY_FILE
-}
-
-function dinein_reload_server() {
-	dinein_rebuild_caddyfile
-	CADDY_FILE="$(dinein_create_config_dir caddy)/Caddyfile"
-	docker exec ${DIVEIN_DOCKER_PREFIX}_caddy caddy reload --config $CADDY_FILE --adapter caddyfile
 }
 
 function dinein_help() {
@@ -185,32 +163,68 @@ function dinein_add_help() {
 }
 
 function dinein_ps() {
-	docker ps -a -f name=$1
+	docker ps \
+		-a \
+		--format "table {{.ID}}\t{{.Ports}}\t{{.Names}}" \
+		-f name=$1 
 }
 
 function dinein_container_exists() {
 	CONTAINER_NAME=$1
-	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
-		dinein_log_error "Container with name $CONTAINER_NAME doesn't exist'"
-		exit 1
+	if [ "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
+		return 0
 	fi
+	dinein_log_error "Container '$CONTAINER_NAME' doesn't exist!"
+	exit 1
+}
+
+function dinein_container_running() {
+	CONTAINER_NAME=$1
+	CONTAINER_STATE=$(docker inspect $CONTAINER_NAME -f "{{.State.Running}}")
+	if [ "$CONTAINER_STATE" == "true" ]; then
+		return 0
+	fi
+	return 1
+	 
 }
 
 function dinein_start() {
 	CONTAINER_NAME=$1
+
+	set +e
 	dinein_container_exists $CONTAINER_NAME
-	docker container start $CONTAINER_NAME 1>/dev/null
+	dinein_container_running $CONTAINER_NAME
+	local RUNNING=$?
+	set -e
+
+	dinein_log_header "$CONTAINER_NAME"
+
+	if [ $RUNNING -eq 0 ]; then 
+		dinein_log "Already running"
+	else
+		dinein_log "Starting"
+		docker container start $CONTAINER_NAME 1>/dev/null
+		dinein_log "Started"
+	fi
 }
 
 function dinein_stop() {
 	CONTAINER_NAME=$1
+
 	dinein_container_exists $CONTAINER_NAME
+
+	dinein_log_header "$CONTAINER_NAME"
+
+	dinein_log "Stopping"
 	docker container stop $CONTAINER_NAME 1>/dev/null
+	dinein_log "Stopped"
 }
 
 function dinein_rm() {
 	CONTAINER_NAME=$1
+
 	dinein_container_exists $CONTAINER_NAME
+
 	docker container stop $CONTAINER_NAME 1>/dev/null
 	docker container rm $CONTAINER_NAME 1>/dev/null
 }
@@ -223,10 +237,9 @@ function dinein_unknown_command() {
 	dinein_log_error "UNKNOWN COMMAND: $@"
 }
 
-function dinein_local() {
+function dinein_source_local() {
 	local PROJECT_FILE="$(pwd)/.dinein"
 	if [ -f $PROJECT_FILE ]; then
-		dinein_log_warn "Sourcing project file $(basename $PROJECT_FILE)"
 		source $PROJECT_FILE
 	fi
 }
@@ -248,6 +261,11 @@ function dinein_log_warn() {
 }
 
 function dinein_log_header() {
+	COLOR=${2:-$TBLD$TUNL}
+	echo ${COLOR}$1${TOFF}
+}
+
+function dinein_log_em() {
 	COLOR=${2:-$TBLD}
 	echo ${COLOR}$1${TOFF}
 }
@@ -259,37 +277,59 @@ function dinein_create_config_dir() {
 
 function dinein_bootstrap() {
 	dinein_check_requirements
-	dinein_local
+	dinein_source_local
 	local CMD=${1:-""}
 	local SUB=${2:-""}
 	local ARGS=${@:3}
+	local PROJECT_FILE="$(pwd)/.dinein"
 	case "$CMD" in
 		"init")
-			dinein_help_header
-			local PROJECT_FILE="$(pwd)/.dinein"
-			if [ ! -f $PROJECT_FILE ]; then
-				dinein_log_header "Creating .dinein project file. Edit it and run init again."
-				dinein_log_header "You can see list of services by running 'dinein list'"
-				dinein_log ""
-				dinein_log "  .dinein"
-				cat <<-TEMPLATE > ".dinein"
-				DINEIN_PROJECT="project_code"
-				DINEIN_SERVICES=(mysql redis)
-TEMPLATE
-			else
-				for SERVICE in ${DINEIN_SERVICES[@]}; do
-					PLUGIN_INIT="dinein_plugin_${SERVICE}_init"
-					if type $PLUGIN_INIT &> /dev/null; then
-						$PLUGIN_INIT
-					fi
-				done
+			if [ -f $PROJECT_FILE ]; then
+				dinein_log "Project file already exists in directory!"
+				exit 1
 			fi
+
+			dinein_log ""
+			dinein_log_header "Creating .dinein project file. Edit it and then run 'up'."
+			dinein_log_header "You can see list of services by running 'dinein list'"
+			dinein_log ""
+			dinein_log "  .dinein"
+			cat <<-TEMPLATE > ".dinein"
+			DINEIN_PROJECT="myproject"
+			DINEIN_SERVICES=(mysql redis)
+			DINEIN_SITE="my-site.test"
+TEMPLATE
 			;;
-		"serve")
-			dinein_serve
+		"up")
+			if [ ! -f $PROJECT_FILE ]; then
+				dinein_log_warn "Run 'dine init' before upping the services"
+			fi;
+			for SERVICE in ${DINEIN_SERVICES[@]}; do
+				PLUGIN_INIT="dinein_plugin_${SERVICE}_init"
+				if type $PLUGIN_INIT &> /dev/null; then
+					$PLUGIN_INIT
+				fi
+			done
+			;;
+		"down")
+			dinein_not_implemented $CMD
+			;;
+
+		"start")
+			dinein_start $2
+			;;
+		"stop")
+			dinein_stop $2
+			;;
+		"list")
+			dinein_log_header "Plugins:"
+			for PLUGIN in ${PLUGINS[@]}; do
+				dinein_log $PLUGIN
+
+			done
 			;;
 		"ps")
-			dinein_ps $DIVEIN_DOCKER_PREFIX
+			dinein_ps ${DIVEIN_DOCKER_PREFIX}
 			;;
 		"config")
 			dinein_config $SUB $ARGS

@@ -6,7 +6,6 @@ PLUGIN_SERVICE=true
 PLUGIN_HOST=false
 
 function dinein_plugin_redis_add() {
-	dinein_log_header "Starting redis service"
 	NAME=${1-redis}
 	VERSON=${2:-latest}
 	PORT=${3:-6379}
@@ -18,7 +17,7 @@ bind 0.0.0.0
 requirepass dinein
 TEMPLATE
 	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
-		dinein_log "Crdineing $CONTAINER_NAME"
+		dinein_log "Creating $CONTAINER_NAME"
 		docker run \
 			--name $CONTAINER_NAME \
 			-p $PORT:6379 \
@@ -26,11 +25,8 @@ TEMPLATE
 			-d redis:$VERSON \
 			redis-server /usr/local/etc/redis/redis.conf
 	else
-		dinein_log "Service existed: booting"
 		dinein_start $CONTAINER_NAME
 	fi
-
-	dinein_log "Service is ready"
 }
 
 function dinein_plugin_redis_stop() {

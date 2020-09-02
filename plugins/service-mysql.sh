@@ -6,7 +6,6 @@ PLUGIN_SERVICE=true
 PLUGIN_HOST=false
 
 function dinein_plugin_mysql_add() {
-	dinein_log_header "Starting mysql service"
 	NAME=${1:-"mysql"}
 	VERSON=${2:-latest}
 	PORT=${3:-3306}
@@ -22,26 +21,20 @@ function dinein_plugin_mysql_add() {
 			-e MYSQL_PASSWORD=dinein \
 			-d mysql:$VERSON
 	else
-		dinein_log "Service existed: booting"
 		dinein_start $CONTAINER_NAME
 	fi
-	dinein_log "Service is ready"
 }
 
 function dinein_plugin_mysql_stop() {
-	dinein_log_header "Stopping mysql service"
 	NAME=${1:-"mysql"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
 	dinein_stop $CONTAINER_NAME
-	dinein_log "Service stopped"
 }
 
 function dinein_plugin_mysql_rm() {
-	dinein_log_header "Removing mysql service"
 	NAME=${1:-"mysql"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
 	dinein_rm $CONTAINER_NAME
-	dinein_log "Service removed"
 }
 
 function dinein_plugin_mysql_add_help() {
