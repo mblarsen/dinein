@@ -6,7 +6,7 @@ implementation.
 
 * Lightweight; just one shell script
 * Write plugins to add services and functionality
-* No dependency on Valet; uses Caddy2 w/SSL
+* No dependency on Valet; uses Caddy2 w/SSL and docker for services
 * Works on Mac and Linux
 
 Philosophy
@@ -32,8 +32,6 @@ npx degit https://github.com/mblarsen/dinein.git
 # Usage
 
 ![usage](https://github.com/mblarsen/dinein/blob/master/usage.png)
-
-![demo](https://github.com/mblarsen/dinein/blob/master/demo.gif)
 
 Alias dine for easy usage:
 

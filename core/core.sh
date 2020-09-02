@@ -47,6 +47,41 @@ function di::core::load_plugins() {
 	done
 }
 
+function di::core::init() {
+	if [ -f "$(pwd)/.dinein" ]; then
+		di::log "Project file already exists in directory!"
+		exit 1
+	fi
+
+	di::log ""
+	di::log::header "Creating .dinein project file. Edit it and then run 'up'."
+	di::log::header "You can see list of services by running 'dinein list'"
+	di::log ""
+	di::log "  .dinein"
+
+	cat <<-TEMPLATE > ".dinein"
+	DINEIN_PROJECT="myproject"
+	DINEIN_SERVICES=(mysql redis)
+	DINEIN_SITE="my-site.test"
+TEMPLATE
+}
+
+function di::core::up() {
+	if [ ! -f "$(pwd)/.dinein" ]; then
+		di::log::warn "Run 'dine init' before upping the services"
+		exit 1
+	fi;
+
+	di::help::header "${DINEIN_PROJECT}"
+
+	for SERVICE in ${DINEIN_SERVICES[@]}; do
+		PLUGIN_INIT="di::${SERVICE}::init"
+		if type $PLUGIN_INIT &> /dev/null; then
+			$PLUGIN_INIT
+		fi
+	done
+}
+
 function di::core::run() {
 	di::core::check_requirements
 	di::core::load_plugins
@@ -55,46 +90,19 @@ function di::core::run() {
 	local CMD=${1:-""}
 	local SUB=${2:-""}
 	local ARGS=${@:3}
-	local PROJECT_FILE="$(pwd)/.dinein"
 
 	case "$CMD" in
 		"init")
-			if [ -f $PROJECT_FILE ]; then
-				di::log "Project file already exists in directory!"
-				exit 1
-			fi
-
-			di::log ""
-			di::log::header "Creating .dinein project file. Edit it and then run 'up'."
-			di::log::header "You can see list of services by running 'dinein list'"
-			di::log ""
-			di::log "  .dinein"
-			cat <<-TEMPLATE > ".dinein"
-			DINEIN_PROJECT="myproject"
-			DINEIN_SERVICES=(mysql redis)
-			DINEIN_SITE="my-site.test"
-TEMPLATE
+			di::core::init
 			;;
 		"up")
-			if [ ! -f $PROJECT_FILE ]; then
-				di::log::warn "Run 'dine init' before upping the services"
-			fi;
-			for SERVICE in ${DINEIN_SERVICES[@]}; do
-				PLUGIN_INIT="di::${SERVICE}::init"
-				if type $PLUGIN_INIT &> /dev/null; then
-					$PLUGIN_INIT
-				fi
-			done
+			di::core::up
 			;;
 		"down")
 			di::not_implemented $CMD
 			;;
-
-		"start")
-			di::start $2
-			;;
-		"stop")
-			di::stop $2
+		"ps")
+			di::ps ${DINEIN_DOCKER_PREFIX}
 			;;
 		"list")
 			di::log::header "Plugins:"
@@ -102,9 +110,6 @@ TEMPLATE
 				di::log $PLUGIN
 
 			done
-			;;
-		"ps")
-			di::ps ${DINEIN_DOCKER_PREFIX}
 			;;
 		"config")
 			di::config $SUB $ARGS

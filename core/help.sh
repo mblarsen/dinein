@@ -2,17 +2,24 @@
 
 function di::help() {
 	di::help::header 
+	echo "  A lightweight development tool similar to Tighten's Takeout."
+	echo ""
 	echo "  ${TUNL}USAGE$TOFF:"
 	echo ""
 	echo "  ${TBLD}init$TOFF"
-	echo "    Creates required services based ${TBLD}.dinein$TOFF file. A template"
-	echo "    file is created if your project doesn't contain one."
+	echo "    Creates a project file called .dinein in the current folder."
 	echo ""
-	echo "  ${TBLD}serve$TOFF"
-	echo "    Start serve. Link a website using one of the server plugins."
+	echo "  ${TBLD}up$TOFF"
+	echo "    Creates and starts your services and as well as inits each of the plugins."
+	echo ""
+	echo "  ${TBLD}down$TOFF"
+	echo "    Stops the dine-in services."
 	echo ""
 	echo "  ${TBLD}ps$TOFF"
-	echo "    Show container status"
+	echo "    Show container status."
+	echo ""
+	echo "  ${TBLD}list$TOFF"
+	echo "    Lists available plugins."
 	echo ""
 	echo "  ${TBLD}[service] add$TOFF ${TEPH}name=service version=latest${TOFF}"
 	echo "    Add service to your. You can create more than one service of the same type"
@@ -59,10 +66,15 @@ function di::help::add() {
 }
 
 function di::help::header() {
-	if type figlet > /dev/null; then
+	MSG=${1:-"DINE-IN"}
+	if type figlet 2>$1 > /dev/null; then
 		echo -n $TEPH
-		figlet -tf slant "Dine-in ( )" | sed 's/^/   /'
+		figlet -tf slant "$MSG" | sed 's/^/   /'
 		echo $TOFF
+	else
+		echo
+		echo "  $TEPH$TUNL$MSG$TOFF"
+		echo
 	fi
 }
 
