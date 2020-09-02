@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
 PLUGIN_NAME="Generic backend"
-PLUGIN_CMD="php"
+PLUGIN_CMD="backend"
 PLUGIN_SERVICE=false
 PLUGIN_BACKEND=true
 
-function di::php::link() {
+function di::backend::link() {
 	DINEIN_PROJECT=${1:-${DINEIN_PROJECT:-""}}
 
 	if [[ "$DINEIN_PROJECT" == "" ]]; then
 		di::log::error "Project name or DINEIN_PROJECT variable required"
+		exit 1
 	fi
 
 	DINEIN_SITE=${2:-${DINEIN_SITE:-$DINEIN_PROJECT.test}}
@@ -21,11 +22,12 @@ function di::php::link() {
 	di::log "Linked site"
 }
 
-function di::php::unlink() {
+function di::backend::unlink() {
 	DINEIN_PROJECT=${1:-${DINEIN_PROJECT:-""}}
 
 	if [[ "$DINEIN_PROJECT" == "" ]]; then
 		di::log::error "Project name or DINEIN_PROJECT variable required"
+		exit 1
 	fi
 
 	di::log::header "Removing site $DINEIN_PROJECT"
@@ -33,18 +35,18 @@ function di::php::unlink() {
 	di::log "Removed site"
 }
 
-function di::php::add_help() {
+function di::backend::add_help() {
 	di::help::add "php link" "[name] [site] [backend] [root]" "Link a site. Uses .dinein for defaults."
 	di::help::add "php unlink" "name" "Remove a new website. Uses .dinein for defaults."
 }
 
-function di::php::run() {
+function di::backend::run() {
 	case $1 in
 		link)
-			di::php::link ${@:2}
+			di::backend::link ${@:2}
 			;;
 		unlink)
-			di::php::unlink ${@:2}
+			di::backend::unlink ${@:2}
 			;;
 		*)
 			di::unknown_command php $1

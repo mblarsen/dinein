@@ -7,11 +7,11 @@ PLUGIN_BACKEND=true
 
 function di::laravel::link() {
 	ROOT=${4:-"$(pwd)/public"}
-	di::php::link "" "" "" "$ROOT"
+	di::backend::link "" "" "" "$ROOT"
 }
 
 function di::laravel::unlink() {
-	di::php::unlink $@
+	di::backend::unlink $@
 }
 
 function di::laravel::add_help() {
