@@ -23,7 +23,6 @@ function di::docker::running() {
 		return 0
 	fi
 	return 1
-	 
 }
 
 function di::docker::start() {

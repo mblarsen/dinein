@@ -95,6 +95,9 @@ function di::core::run() {
 		"init")
 			di::core::init
 			;;
+		"caddy:start")
+			di::site::caddy::start
+			;;
 		"up")
 			di::core::up
 			;;
@@ -130,10 +133,9 @@ function di::core::run() {
 				fi
 			done
 
-
 			if [ $FOUND -eq 0 ]; then
 				di::help $CMD $SUB
-				di::unknown_command $CMD $SUB
+				di::help::unknown_command $CMD $SUB
 			fi
 			;;
 	esac

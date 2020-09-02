@@ -39,8 +39,10 @@ Alias dine for easy usage:
 alias dine="/path/to/dinein/dinein.sh"
 ```
 
-Commit your `.dinein` file with your project to easily recreate the services on another system.
+Commit your `.dinein` file with your project to easily recreate the services on
+another system.
 
 ```shell
 dine init
+dine up
 ```

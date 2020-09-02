@@ -6,6 +6,9 @@ function di::help() {
 	echo ""
 	echo "  ${TUNL}USAGE$TOFF:"
 	echo ""
+	echo "  ${TBLD}caddy:start$TOFF"
+	echo "    A helper function for starting caddy the right way."
+	echo ""
 	echo "  ${TBLD}init$TOFF"
 	echo "    Creates a project file called .dinein in the current folder."
 	echo ""
@@ -67,7 +70,7 @@ function di::help::add() {
 
 function di::help::header() {
 	MSG=${1:-"DINE-IN"}
-	if type figlet 2>$1 > /dev/null; then
+	if type figlet 2>&1 > /dev/null; then
 		echo -n $TEPH
 		figlet -tf slant "$MSG" | sed 's/^/   /'
 		echo $TOFF
