@@ -42,17 +42,17 @@ else
 fi
 
 function dinein_config() {
-	echo "Dive-in root:"
+	dinein_log_header "Dive-in root:"
 	echo "  $DINEIN_ROOT"
-	echo "Dive-in config directory:"
+	dinein_log_header "Dive-in config directory:"
 	echo "  $DINEIN_CONFIG_DIR ${TDIM}(\$DINEIN_CONFIG_DIR)$TOFF"
-	echo "Docker prefix:"
+	dinein_log_header "Docker prefix:"
 	echo "  $DIVEIN_DOCKER_PREFIX ${TDIM}(\$DIVEIN_DOCKER_PREFIX)$TOFF"
-	echo "Plugin directory:"
+	dinein_log_header "Plugin directory:"
 	echo "  $PLUGIN_DIR"
-	echo "Service plugins:"
+	dinein_log_header "Service plugins:"
 	echo "  ${SERVICES[@]}"
-	echo "Host plugins:"
+	dinein_log_header "Host plugins:"
 	echo "  ${HOSTS[@]}"
 }
 
