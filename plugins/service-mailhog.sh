@@ -5,61 +5,60 @@ PLUGIN_CMD="mailhog"
 PLUGIN_SERVICE=true
 PLUGIN_HOST=false
 
-function dinein::mailhog::add() {
+function di::mailhog::add() {
 	NAME=${1-mailhog}
 	VERSON=${2:-latest}
 	PORT=${3:-1025}
 	UI_PORT=${4:-8025}
-	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
+	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
 	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
-		dinein::log "Creating container"
+		di::log "Creating container"
 		docker run \
 			--name $CONTAINER_NAME \
 			-p $PORT:1025 \
 			-p $UI_PORT:8025 \
 			-d mailhog/mailhog:$VERSON
 	else
-		dinein::start $CONTAINER_NAME
+		di::docker::start $CONTAINER_NAME
 	fi
 }
 
-function dinein::mailhog::stop() {
-	dinein::log_header "Stopping mailhog service"
+function di::mailhog::stop() {
+	di::log::header "Stopping mailhog service"
 	NAME=${1:-"mailhog"}
-	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
-	dinein::stop $CONTAINER_NAME
-	dinein::log "Service stopped"
+	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
+	di::docker::stop $CONTAINER_NAME
+	di::log "Service stopped"
 }
 
-function dinein::mailhog::rm() {
-	dinein::log_header "Removing mailhog service"
+function di::mailhog::rm() {
+	di::log::header "Removing mailhog service"
 	NAME=${1:-"mailhog"}
-	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
-	dinein::rm $CONTAINER_NAME
-	dinein::log "Service removed"
+	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
+	di::docker::rm $CONTAINER_NAME
+	di::log "Service removed"
 }
 
-function dinein::mailhog::init() {
-	# TODO use data from .dinein
-	dinein::mailhog::add
+function di::mailhog::init() {
+	di::mailhog::add
 }
 
-function dinein::mailhog::run() {
+function di::mailhog::run() {
 	case $1 in
 		add|start)
-			dinein::mailhog::add ${@:2}
+			di::mailhog::add ${@:2}
 			;;
 		stop)
-			dinein::not_implemented $1
+			di::not_implemented $1
 			;;
 		rm)
-			dinein::mailhog::rm ${@:2}
+			di::mailhog::rm ${@:2}
 			;;
 		ps)
-			dinein::ps mailhog${2:@}
+			di::docker::ps mailhog${2:@}
 			;;
 		*)
-			dinein::unknown_command mailhog $1
+			di::unknown_command mailhog $1
 			;;
 	esac
 }

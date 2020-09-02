@@ -5,49 +5,30 @@ PLUGIN_CMD="laravel"
 PLUGIN_SERVICE=false
 PLUGIN_HOST=true
 
-function dinein::laravel::link() {
-	DINEIN_PROJECT=${1:-${DINEIN_PROJECT:-""}}
-
-	if [[ "$DINEIN_PROJECT" == "" ]]; then
-		dinein::log_error "Project name or DINEIN_PROJECT variable required"
-	fi
-
-	DINEIN_SITE=${2:-${DINEIN_SITE:-$DINEIN_PROJECT.test}}
-	DINEIN_BACKEND=${3:-${DINEIN_BACKEND:-"127.0.0.1:8000"}}
+function di::laravel::link() {
 	ROOT=${4:-"$(pwd)/public"}
-
-	dinein::log_header "Linking site $DINEIN_PROJECT → $DINEIN_SITE [$DINEIN_BACKEND]"
-	dinein::core::site::generate $DINEIN_PROJECT $DINEIN_SITE $ROOT $DINEIN_BACKEND
-	dinein::log "Linked site"
+	di::php::link "" "" "" "$ROOT"
 }
 
-function dinein::laravel::unlink() {
-	DINEIN_PROJECT=${1:-${DINEIN_PROJECT:-""}}
-
-	if [[ "$DINEIN_PROJECT" == "" ]]; then
-		dinein::log_error "Project name or DINEIN_PROJECT variable required"
-	fi
-
-	dinein::log_header "Removing site $DINEIN_PROJECT"
-	dinein::core::site::remove $DINEIN_PROJECT
-	dinein::log "Removed site"
+function di::laravel::unlink() {
+	di::php::unlink $@
 }
 
-function dinein::laravel::add_help() {
-	dinein::add_help "laravel link" "name [site] [backend] [root]" "Link a new website."
-	dinein::add_help "laravel unlink" "name" "Remove a new website."
+function di::laravel::add_help() {
+	di::help::add "laravel link" "[name] [site] [backend] [root]" "Link a site. Uses .dinein for defaults."
+	di::help::add "laravel unlink" "name" "Remove a new website. Uses .dinein for defaults."
 }
 
-function dinein::laravel::run() {
+function di::laravel::run() {
 	case $1 in
 		link)
-			dinein::laravel::link ${@:2}
+			di::laravel::link ${@:2}
 			;;
 		unlink)
-			dinein::laravel::unlink ${@:2}
+			di::laravel::unlink ${@:2}
 			;;
 		*)
-			dinein::unknown_command laravel $1
+			di::unknown_command laravel $1
 			;;
 	esac
 }

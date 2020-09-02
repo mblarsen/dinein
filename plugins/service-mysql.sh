@@ -5,13 +5,13 @@ PLUGIN_CMD="mysql"
 PLUGIN_SERVICE=true
 PLUGIN_HOST=false
 
-function dinein::mysql::add() {
+function di::mysql::add() {
 	NAME=${1:-"mysql"}
 	VERSON=${2:-latest}
 	PORT=${3:-3306}
-	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
+	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
 	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
-		dinein::log "Creating container"
+		di::log "Creating container"
 		docker run \
 			--name $CONTAINER_NAME \
 			-p $PORT:3306 \
@@ -21,50 +21,50 @@ function dinein::mysql::add() {
 			-e MYSQL_PASSWORD=dinein \
 			-d mysql:$VERSON
 	else
-		dinein::start $CONTAINER_NAME
+		di::docker::start $CONTAINER_NAME
 	fi
 }
 
-function dinein::mysql::stop() {
+function di::mysql::stop() {
 	NAME=${1:-"mysql"}
-	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
-	dinein::stop $CONTAINER_NAME
+	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
+	di::docker::stop $CONTAINER_NAME
 }
 
-function dinein::mysql::rm() {
+function di::mysql::rm() {
 	NAME=${1:-"mysql"}
-	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
-	dinein::rm $CONTAINER_NAME
+	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
+	di::docker::rm $CONTAINER_NAME
 }
 
-function dinein::mysql::add_help() {
-	dinein::add_help "mysql db" "name=mysql database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
+function di::mysql::add_help() {
+	di::help::add "mysql db" "name=mysql database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
 }
 
-function dinein::mysql::init() {
+function di::mysql::init() {
 	# TODO use data from .dinein
-	dinein::mysql::add
+	di::mysql::add
 	if [ -z $DINEIN_PROJECT ]; then
 		echo "Create database"
 	fi
 }
 
-function dinein::mysql::run() {
+function di::mysql::run() {
 	case $1 in
 		add|start)
-			dinein::mysql::add ${@:2}
+			di::mysql::add ${@:2}
 			;;
 		stop)
-			dinein::mysql::stop ${@:2}
+			di::mysql::stop ${@:2}
 			;;
 		rm)
-			dinein::mysql::rm ${@:2}
+			di::mysql::rm ${@:2}
 			;;
 		db)
-			dinein::not_implemented $1
+			di::not_implemented $1
 			;;
 		*)
-			dinein::unknown_command mysql $1
+			di::unknown_command mysql $1
 			;;
 	esac
 }
