@@ -5,19 +5,19 @@ PLUGIN_CMD="redis"
 PLUGIN_SERVICE=true
 PLUGIN_HOST=false
 
-function dinein_plugin_redis_add() {
+function dinein::plugin_redis_add() {
 	NAME=${1-redis}
 	VERSON=${2:-latest}
 	PORT=${3:-6379}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
-	local REDIS_CONFIG="$(dinein_create_config_dir redis)/redis.conf"
+	local REDIS_CONFIG="$(dinein::create_config_dir redis)/redis.conf"
 	cat <<-TEMPLATE > "$REDIS_CONFIG"
 port 6379
 bind 0.0.0.0
 requirepass dinein
 TEMPLATE
 	if [ ! "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
-		dinein_log "Creating $CONTAINER_NAME"
+		dinein::log "Creating $CONTAINER_NAME"
 		docker run \
 			--name $CONTAINER_NAME \
 			-p $PORT:6379 \
@@ -25,52 +25,52 @@ TEMPLATE
 			-d redis:$VERSON \
 			redis-server /usr/local/etc/redis/redis.conf
 	else
-		dinein_start $CONTAINER_NAME
+		dinein::start $CONTAINER_NAME
 	fi
 }
 
-function dinein_plugin_redis_stop() {
-	dinein_log_header "Stopping redis service"
+function dinein::plugin_redis_stop() {
+	dinein::log_header "Stopping redis service"
 	NAME=${1:-"redis"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
-	dinein_stop $CONTAINER_NAME
-	dinein_log "Service stopped"
+	dinein::stop $CONTAINER_NAME
+	dinein::log "Service stopped"
 }
 
-function dinein_plugin_redis_rm() {
-	dinein_log_header "Removing redis service"
+function dinein::plugin_redis_rm() {
+	dinein::log_header "Removing redis service"
 	NAME=${1:-"redis"}
 	CONTAINER_NAME=${DIVEIN_DOCKER_PREFIX}_$NAME
-	dinein_rm $CONTAINER_NAME
-	dinein_log "Service removed"
+	dinein::rm $CONTAINER_NAME
+	dinein::log "Service removed"
 }
 
-function dinein_plugin_redis_add_help() {
-	dinein_add_help "redis clear" "name=redis" "Clear the cache."
+function dinein::plugin_redis_add_help() {
+	dinein::add_help "redis clear" "name=redis" "Clear the cache."
 }
 
-function dinein_plugin_redis_init() {
+function dinein::plugin_redis_init() {
 	# TODO use data from .dinein
-	dinein_plugin_redis_add
+	dinein::plugin_redis_add
 }
 
-function dinein_plugin_redis() {
+function dinein::plugin_redis() {
 	case $1 in
 		add|start)
-			dinein_plugin_redis_add ${@:2}
+			dinein::plugin_redis_add ${@:2}
 			;;
 		stop)
-			dinein_not_implemented $1
+			dinein::not_implemented $1
 			;;
 		rm)
-			dinein_plugin_redis_rm ${@:2}
+			dinein::plugin_redis_rm ${@:2}
 			;;
 		clear)
-			dinein_not_implemented $1
+			dinein::not_implemented $1
 			;;
 
 		*)
-			dinein_unknown_command redis $1
+			dinein::unknown_command redis $1
 			;;
 	esac
 }
