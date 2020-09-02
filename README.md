@@ -1,7 +1,7 @@
 # Dine-in 🏠
 
 A lightweight _local_ development tool that helps you manage docker services
-and website configurations.  
+and website configurations.
 
 * Lightweight; just a bunch of structured shell scrips
 * Hosting and SSL/TLS using Caddy; One server for all of your projects.
@@ -10,7 +10,7 @@ and website configurations.
   need to use both MySQL 5.7 and 8.
 * Write plugins to add more services. Comes with: mysql, redis, mailhog. A
   plugin is but a few lines of code that you can mostly copy from docker
-  documentation. 
+  documentation.
 * Use service plugins to add functionality, e.g. to clear redit cache or create a new
   database (not the server)
 * Use backend plugins to link and unlink websites. Comes with a generic backend
