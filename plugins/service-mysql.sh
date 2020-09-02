@@ -3,7 +3,7 @@
 PLUGIN_NAME="MySQL"
 PLUGIN_CMD="mysql"
 PLUGIN_SERVICE=true
-PLUGIN_HOST=false
+PLUGIN_BACKEND=false
 
 function di::mysql::add() {
 	NAME=${1:-"mysql"}

@@ -3,7 +3,7 @@
 PLUGIN_NAME="Redis"
 PLUGIN_CMD="redis"
 PLUGIN_SERVICE=true
-PLUGIN_HOST=false
+PLUGIN_BACKEND=false
 
 function di::redis::add() {
 	NAME=${1-redis}

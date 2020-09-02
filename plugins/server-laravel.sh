@@ -3,7 +3,7 @@
 PLUGIN_NAME="Laravel artisan serve"
 PLUGIN_CMD="laravel"
 PLUGIN_SERVICE=false
-PLUGIN_HOST=true
+PLUGIN_BACKEND=true
 
 function di::laravel::link() {
 	ROOT=${4:-"$(pwd)/public"}

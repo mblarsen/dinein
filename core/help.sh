@@ -58,8 +58,8 @@ function di::help::config() {
 	echo "  $PLUGIN_DIR"
 	di::log::header "Service plugins:"
 	echo "  ${SERVICES[@]}"
-	di::log::header "Host plugins:"
-	echo "  ${HOSTS[@]}"
+	di::log::header "Backend plugins:"
+	echo "  ${BACKENDS[@]}"
 }
 
 function di::help::add() {

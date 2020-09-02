@@ -41,8 +41,8 @@ function di::core::load_plugins() {
 	  if [[ "$PLUGIN_SERVICE" == "true" ]]; then
 		  SERVICES+=($PLUGIN_CMD)
 	  fi
-	  if [[ "$PLUGIN_HOST" == "true" ]]; then
-		  HOSTS+=($PLUGIN_CMD)
+	  if [[ "$PLUGIN_BACKEND" == "true" ]]; then
+		  BACKENDS+=($PLUGIN_CMD)
 	  fi
 	done
 }
@@ -115,7 +115,7 @@ function di::core::run() {
 			done
 			;;
 		"config")
-			di::config $SUB $ARGS
+			di::help::config $SUB $ARGS
 			;;
 		"help")
 			di::help $CMD $SUB

@@ -3,7 +3,7 @@
 PLUGIN_NAME="Mailhog"
 PLUGIN_CMD="mailhog"
 PLUGIN_SERVICE=true
-PLUGIN_HOST=false
+PLUGIN_BACKEND=false
 
 function di::mailhog::add() {
 	NAME=${1-mailhog}

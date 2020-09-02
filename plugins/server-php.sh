@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-PLUGIN_NAME="Built-in PHP server"
+PLUGIN_NAME="Generic backend"
 PLUGIN_CMD="php"
 PLUGIN_SERVICE=false
-PLUGIN_HOST=true
+PLUGIN_BACKEND=true
 
 function di::php::link() {
 	DINEIN_PROJECT=${1:-${DINEIN_PROJECT:-""}}

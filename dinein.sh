@@ -18,7 +18,7 @@ PLUGIN_DIR=$DINEIN_ROOT/plugins
 # A list of all the plugins
 PLUGINS=()
 # A list of host-type plugins (eg. laravel, php)
-HOSTS=()
+BACKENDS=()
 # A list of service-type plugins (redis, mysql)
 SERVICES=()
 
