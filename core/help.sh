@@ -48,17 +48,17 @@ function di::help() {
 }
 
 function di::help::config() {
-	di::log::header "Dive-in root:"
+	di::log::em "Dive-in root:"
 	echo "  $DINEIN_ROOT"
-	di::log::header "Dive-in config directory:"
+	di::log::em "Dive-in config directory:"
 	echo "  $DINEIN_CONFIG_DIR ${TDIM}(\$DINEIN_CONFIG_DIR)$TOFF"
-	di::log::header "Docker prefix:"
+	di::log::em "Docker prefix:"
 	echo "  $DINEIN_DOCKER_PREFIX ${TDIM}(\$DINEIN_DOCKER_PREFIX)$TOFF"
-	di::log::header "Plugin directory:"
+	di::log::em "Plugin directory:"
 	echo "  $PLUGIN_DIR"
-	di::log::header "Service plugins:"
+	di::log::em "Service plugins:"
 	echo "  ${SERVICES[@]}"
-	di::log::header "Backend plugins:"
+	di::log::em "Backend plugins:"
 	echo "  ${BACKENDS[@]}"
 }
 
