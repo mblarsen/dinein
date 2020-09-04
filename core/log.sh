@@ -26,3 +26,13 @@ function di::log::em() {
 	echo ${COLOR}$1${TOFF}
 }
 
+function di::log::success() {
+	COLOR=${2:-$TGRN}
+	echo ${COLOR}$1${TOFF}
+}
+
+function di::log::dim() {
+	COLOR=${2:-$TDIM}
+	echo ${COLOR}$1${TOFF}
+}
+
