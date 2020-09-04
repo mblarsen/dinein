@@ -57,11 +57,13 @@ function di::docker::stop() {
 	di::log "Stopped"
 }
 
-function di::rm() {
+function di::docker::rm() {
 	CONTAINER_NAME=$1
 
 	di::docker::exists $CONTAINER_NAME
 
 	docker container stop $CONTAINER_NAME 1>/dev/null
+	di::log "Removing"
 	docker container rm $CONTAINER_NAME 1>/dev/null
+	di::log "Removed"
 }
