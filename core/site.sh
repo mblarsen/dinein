@@ -1,42 +1,47 @@
 #!/usr/bin/env bash
 
-function di::site::caddy::running() {
-	CADDY_STATUS=$(curl -o -I -L -s -w "%{http_code}" http://127.0.0.1:2019/config/)
-	if [ "$CADDY_STATUS" == "200" ]; then
-		return 0
-	fi
-	return 1
+function di::site::caddy::status() {
+	echo $(curl -o -I -L -s -w "%{http_code}" http://127.0.0.1:2019/config/)
 }
 
 # Set up caddy
 function di::site::caddy::start() {
-	set +e
-	di::site::caddy::running
-	local RUNNING=$?
-	set -e
+	CADDY_STATUS=$(di::site::caddy::status)
 
-	if [ $RUNNING -eq 0 ]; then
+	if [[ "$CADDY_STATUS" == "200" ]]; then
 		di::log::warn "Caddy is already running"
 		exit 0
 	fi
 
 	CADDY_FILE="$(di::core::create_config_dir caddy)/Caddyfile"
 	CMD="sudo caddy start --config $CADDY_FILE --watch"
+
+	if [ $(timeout 2 sudo id > /dev/null) ]; then
+		di::log ""
+		di::log::em "Dine-in is using Caddy to serve files and manage certificates."
+		di::log ""
+		di::log "To allow Caddy to bind to port :80 and :443 we need to run Caddy"
+		di::log "with sudo rights the first time the server is started. Afterwards"
+		di::log "Caddy willa utomatically look for changes to the config and reload"
+		di::log "as needed."
+		di::log ""
+		di::log    "This is the command that will run:"
+		di::log ""
+		di::log::warn "$CMD" $TGRN
+		di::log ""
+		di::log::em "You can abort the script and enter it yourself,"
+		di::log::em "or enter your sudo password below (if needed)."
+		di::log ""
+	fi
+	$CMD > /dev/null 2>&1
 	di::log ""
-	di::log::em "Dine-in is using Caddy to serve files and manage certificates."
-	di::log ""
-	di::log "To allow Caddy to bind to port :80 and :443 you'll need to run"
-	di::log "Caddy as root. You only need to start the serve once. Caddy will"
-	di::log "automatically look for changes to the config and reload as needed."
-	di::log ""
-	di::log    "This is the command that will run:"
-	di::log ""
-	di::log::warn "$CMD" $TGRN
-	di::log ""
-	di::log::em "You can abort the script and enter it yourself,"
-	di::log::em "or enter your sudo password below (if needed)."
-	di::log ""
-	$CMD 1>/dev/null
+	di::log::success "Started Caddy"
+}
+
+function di::site::caddy::stop() {
+	di::log::warn "Stopping Caddy"
+	sudo caddy stop > /dev/null 2>&1
+	di::log::success "Stopped"
 }
 
 # Generate a Caddyfile for the site being linked

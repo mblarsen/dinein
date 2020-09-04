@@ -91,11 +91,12 @@ function di::core::up() {
 }
 
 function di::core::down() {
+	di::log::warn "Stopping all services"
 	local CONTAINERS=$(docker ps -q -f name="${DINEIN_DOCKER_PREFIX}_")
 	if [[ "$CONTAINERS" != "" ]]; then
 		docker container stop $CONTAINERS > /dev/null
 	fi
-	di::log "All Dine-in containers has been stopped!"
+	di::log::success "Stopped"
 }
 
 function di::core::teardown() {
@@ -125,11 +126,20 @@ function di::core::run() {
 			;;
 		"up")
 			di::core::up
+			CADDY_STATUS=$(di::site::caddy::status)
+			if [[ "$CADDY_STATUS" != "200" ]]; then
+				di::site::caddy::start
+			fi
 			;;
 		"down")
 			di::core::down
+			CADDY_STATUS=$(di::site::caddy::status)
+			if [[ "$CADDY_STATUS" == "200" ]]; then
+				di::site::caddy::stop
+			fi
 			;;
 		"teardown")
+			# TODO remove caddyfiles
 			di::core::teardown
 			;;
 		"ps")
