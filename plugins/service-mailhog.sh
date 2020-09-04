@@ -18,6 +18,7 @@ function di::mailhog::add() {
 			-p $PORT:1025 \
 			-p $UI_PORT:8025 \
 			-d mailhog/mailhog:$VERSON
+		di::log::success "Created container"
 	else
 		di::docker::start $CONTAINER_NAME
 	fi

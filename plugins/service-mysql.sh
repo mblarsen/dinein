@@ -20,6 +20,7 @@ function di::mysql::add() {
 			-e MYSQL_USER=dinein \
 			-e MYSQL_PASSWORD=dinein \
 			-d mysql:$VERSON
+		di::log::success "Created container"
 	else
 		di::docker::start $CONTAINER_NAME
 	fi

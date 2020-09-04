@@ -18,6 +18,7 @@ function di::mongo::add() {
 			-e MONGO_INITDB_ROOT_USERNAME=dinein \
 			-e MONGO_INITDB_ROOT_PASSWORD=dinein \
 			-d mongo:$VERSON
+		di::log::success "Created container"
 	else
 		di::docker::start $CONTAINER_NAME
 	fi

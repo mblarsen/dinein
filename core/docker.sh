@@ -34,14 +34,12 @@ function di::docker::start() {
 	local RUNNING=$?
 	set -e
 
-	di::log::header "$CONTAINER_NAME"
-
 	if [ $RUNNING -eq 0 ]; then 
-		di::log "Already running"
+		di::log::success "Already running"
 	else
 		di::log "Starting"
 		docker container start $CONTAINER_NAME 1>/dev/null
-		di::log "Started"
+		di::log::success "Started"
 	fi
 }
 
