@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 function di::site::caddy::running() {
 	CADDY_STATUS=$(curl -o -I -L -s -w "%{http_code}" http://127.0.0.1:2019/config/)
 	if [ "$CADDY_STATUS" == "200" ]; then
@@ -69,6 +68,7 @@ function di::site::remove() {
 	di::site::rebuild
 }
 
+# Rebuild joined Caddyfile
 function di::site::rebuild() {
 	CADDY_FILE="$(di::core::create_config_dir caddy)/Caddyfile"
 	CADDY_SITES=$(ls -d $(di::core::create_config_dir "caddy/sites")/*)
