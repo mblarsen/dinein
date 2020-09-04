@@ -8,8 +8,8 @@ and website configurations.
 * Services provided by docker. One container per service for all of your
   projects by default. But easy to add more instances.  For example, if you
   need to use both MySQL 5.7 and 8.
-* Write plugins to add more services. Comes with: mysql, redis, mailhog. A
-  plugin is but a few lines of code that you can mostly copy from docker
+* Write plugins to add more services. Comes with: mysql, mongo, redis, mailhog.
+  A plugin is but a few lines of code that you can mostly copy from docker
   documentation.
 * Use service plugins to add functionality, e.g. to clear redit cache or create a new
   database (not the server)
