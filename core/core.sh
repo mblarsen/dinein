@@ -17,6 +17,14 @@ function di::core::check_requirements() {
 		di::log "Visit ${TBLD}${TUNL}https://docs.docker.com/get-docker/${TOFF} to install."
 	fi
 
+	if ! type caddy > /dev/null; then
+		echo ""
+		FAIL=1
+		di::log::warn "caddy is not installed"
+		di::log "${TGRN}$ ${TOFF}${TBLD}apt install caddy${TOFF} or"
+		di::log "${TGRN}$ ${TOFF}${TBLD}brew install caddy${TOFF} to install."
+	fi
+
 	if [ $FAIL -eq 1 ]; then
 		exit 1
 	fi
