@@ -54,7 +54,7 @@ function di::redis::init() {
 	di::redis::add
 }
 
-function di::plugin_redis() {
+function di::redis::run() {
 	case $1 in
 		add|start)
 			di::redis::add ${@:2}
