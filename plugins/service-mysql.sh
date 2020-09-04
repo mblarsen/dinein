@@ -24,6 +24,11 @@ function di::mysql::add() {
 	else
 		di::docker::start $CONTAINER_NAME
 	fi
+	di::log::dim "HOST: 127.0.0.1:$PORT ($VERSON)"
+	di::log::dim "USER: dinein"
+	di::log::dim "DATABASE: dinein"
+	di::log::dim "PASSWORD: dinein"
+	di::log::dim "ROOT_PASSWORD: dinein"
 }
 
 function di::mysql::stop() {

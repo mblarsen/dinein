@@ -22,6 +22,9 @@ function di::mongo::add() {
 	else
 		di::docker::start $CONTAINER_NAME
 	fi
+	di::log::dim "HOST: 127.0.0.1:$PORT ($VERSON)"
+	di::log::dim "ROOT_USERNAME: dinein"
+	di::log::dim "ROOT_PASSWORD: dinein"
 }
 
 function di::mongo::stop() {

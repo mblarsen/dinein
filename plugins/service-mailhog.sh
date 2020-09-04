@@ -22,6 +22,8 @@ function di::mailhog::add() {
 	else
 		di::docker::start $CONTAINER_NAME
 	fi
+	di::log::dim "HOST: 127.0.0.1:$PORT ($VERSON)"
+	di::log::dim "UI: 127.0.0.1:$UI_PORT"
 }
 
 function di::mailhog::stop() {
