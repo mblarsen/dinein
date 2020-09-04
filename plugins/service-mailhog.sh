@@ -45,7 +45,7 @@ function di::mailhog::run() {
 			di::mailhog::add ${@:2}
 			;;
 		stop)
-			di::help::not_implemented $1
+			di:mailhog::stop ${@:2}
 			;;
 		rm)
 			di::mailhog::rm ${@:2}
