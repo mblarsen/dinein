@@ -28,7 +28,7 @@ function di::laravel::run() {
 			di::laravel::unlink ${@:2}
 			;;
 		*)
-			di::unknown_command laravel $1
+			di::help::unknown_command laravel $1
 			;;
 	esac
 }

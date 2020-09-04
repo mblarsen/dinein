@@ -49,7 +49,7 @@ function di::backend::run() {
 			di::backend::unlink ${@:2}
 			;;
 		*)
-			di::unknown_command php $1
+			di::help::unknown_command php $1
 			;;
 	esac
 }

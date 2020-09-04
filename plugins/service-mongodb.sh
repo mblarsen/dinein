@@ -62,7 +62,7 @@ function di::mongo::run() {
 			di::help::not_implemented $1
 			;;
 		*)
-			di::unknown_command mongo $1
+			di::help::unknown_command mongo $1
 			;;
 	esac
 }

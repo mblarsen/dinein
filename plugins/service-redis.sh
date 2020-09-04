@@ -70,7 +70,7 @@ function di::redis::run() {
 			;;
 
 		*)
-			di::unknown_command redis $1
+			di::help::unknown_command redis $1
 			;;
 	esac
 }

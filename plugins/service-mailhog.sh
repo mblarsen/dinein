@@ -54,7 +54,7 @@ function di::mailhog::run() {
 			di::docker::ps mailhog${2:@}
 			;;
 		*)
-			di::unknown_command mailhog $1
+			di::help::unknown_command mailhog $1
 			;;
 	esac
 }

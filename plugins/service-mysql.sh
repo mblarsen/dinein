@@ -64,7 +64,7 @@ function di::mysql::run() {
 			di::help::not_implemented $1
 			;;
 		*)
-			di::unknown_command mysql $1
+			di::help::unknown_command mysql $@
 			;;
 	esac
 }
