@@ -86,6 +86,6 @@ function di::help::not_implemented() {
 }
 
 function di::help::unknown_command() {
-	di::log::error "UNKNOWN COMMAND: $@"
+	di::log::error "UNKNOWN COMMAND: $1 $2"
 }
 
