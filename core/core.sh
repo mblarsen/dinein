@@ -90,6 +90,23 @@ function di::core::up() {
 	done
 }
 
+function di::core::down() {
+	local CONTAINERS=$(docker ps -q -f name="${DINEIN_DOCKER_PREFIX}_")
+	if [[ "$CONTAINERS" != "" ]]; then
+		docker container stop $CONTAINERS > /dev/null
+	fi
+	di::log "All Dine-in containers has been stopped!"
+}
+
+function di::core::teardown() {
+	di::core::down
+	local CONTAINERS=$(docker ps -a -q -f name="${DINEIN_DOCKER_PREFIX}_")
+	if [[ "$CONTAINERS" != "" ]]; then
+		docker container rm $CONTAINERS > /dev/null
+	fi
+	di::help::header "Bye ;("
+}
+
 function di::core::run() {
 	di::core::check_requirements
 	di::core::load_plugins
@@ -110,7 +127,10 @@ function di::core::run() {
 			di::core::up
 			;;
 		"down")
-			di::help::not_implemented $CMD
+			di::core::down
+			;;
+		"teardown")
+			di::core::teardown
 			;;
 		"ps")
 			di::docker::ps ${DINEIN_DOCKER_PREFIX}
