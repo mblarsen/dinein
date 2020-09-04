@@ -24,25 +24,25 @@ TEMPLATE
 			-v "$REDIS_CONFIG:/usr/local/etc/redis/redis.conf" \
 			-d redis:$VERSON \
 			redis-server /usr/local/etc/redis/redis.conf
+		di::log::success "Created container"
 	else
 		di::docker::start $CONTAINER_NAME
 	fi
+	di::log::dim "HOST: 127.0.0.1:$PORT ($VERSON)"
+	di::log::dim "CONFIG: $REDIS_CONFIG"
+	di::log::dim "PASSWORD: dinein"
 }
 
 function di::redis::stop() {
-	di::log::header "Stopping redis service"
 	NAME=${1:-"redis"}
 	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
 	di::docker::stop $CONTAINER_NAME
-	di::log "Service stopped"
 }
 
 function di::redis::rm() {
-	di::log::header "Removing redis service"
 	NAME=${1:-"redis"}
 	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
 	di::docker::rm $CONTAINER_NAME
-	di::log "Service removed"
 }
 
 function di::redis::add_help() {
@@ -50,11 +50,12 @@ function di::redis::add_help() {
 }
 
 function di::redis::init() {
-	# TODO use data from .dinein
+	di::log::header "Redis"
 	di::redis::add
 }
 
 function di::redis::run() {
+	di::log::header "Redis"
 	case $1 in
 		add|start)
 			di::redis::add ${@:2}

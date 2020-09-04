@@ -39,10 +39,12 @@ function di::mailhog::rm() {
 }
 
 function di::mailhog::init() {
+	di::log::header "Mailhog"
 	di::mailhog::add
 }
 
 function di::mailhog::run() {
+	di::log::header "Mailhog"
 	case $1 in
 		add|start)
 			di::mailhog::add ${@:2}

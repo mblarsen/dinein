@@ -48,7 +48,7 @@ function di::mysql::add_help() {
 }
 
 function di::mysql::init() {
-	# TODO use data from .dinein
+	di::log::header "MySQL"
 	di::mysql::add
 	if [ -z $DINEIN_PROJECT ]; then
 		echo "Create database"
@@ -56,6 +56,7 @@ function di::mysql::init() {
 }
 
 function di::mysql::run() {
+	di::log::header "MySQL"
 	case $1 in
 		add|start)
 			di::mysql::add ${@:2}

@@ -44,7 +44,7 @@ function di::mongo::add_help() {
 }
 
 function di::mongo::init() {
-	# TODO use data from .dinein
+	di::log::header "MongoDB"
 	di::mongo::add
 	if [ -z $DINEIN_PROJECT ]; then
 		echo "Create database"
@@ -52,6 +52,7 @@ function di::mongo::init() {
 }
 
 function di::mongo::run() {
+	di::log::header "MongoDB"
 	case $1 in
 		add|start)
 			di::mongo::add ${@:2}
