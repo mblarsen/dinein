@@ -24,19 +24,15 @@ function di::mailhog::add() {
 }
 
 function di::mailhog::stop() {
-	di::log::header "Stopping mailhog service"
 	NAME=${1:-"mailhog"}
 	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
 	di::docker::stop $CONTAINER_NAME
-	di::log "Service stopped"
 }
 
 function di::mailhog::rm() {
-	di::log::header "Removing mailhog service"
 	NAME=${1:-"mailhog"}
 	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
 	di::docker::rm $CONTAINER_NAME
-	di::log "Service removed"
 }
 
 function di::mailhog::init() {
