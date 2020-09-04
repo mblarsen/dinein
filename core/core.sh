@@ -76,7 +76,7 @@ TEMPLATE
 
 function di::core::up() {
 	if [ ! -f "$(pwd)/.dinein" ]; then
-		di::log::warn "Run 'dine init' before upping the services"
+		di::log::warn "Run 'dine init' before using services"
 		exit 1
 	fi;
 
