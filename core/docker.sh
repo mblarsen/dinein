@@ -65,8 +65,3 @@ function di::rm() {
 	docker container stop $CONTAINER_NAME 1>/dev/null
 	docker container rm $CONTAINER_NAME 1>/dev/null
 }
-
-function di::not_implemented() {
-	di::log::warn "NOT IMPLEMENTED: $1"
-}
-

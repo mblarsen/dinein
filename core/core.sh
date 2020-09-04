@@ -110,7 +110,7 @@ function di::core::run() {
 			di::core::up
 			;;
 		"down")
-			di::not_implemented $CMD
+			di::help::not_implemented $CMD
 			;;
 		"ps")
 			di::ps ${DINEIN_DOCKER_PREFIX}

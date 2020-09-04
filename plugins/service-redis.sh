@@ -60,13 +60,13 @@ function di::plugin_redis() {
 			di::redis::add ${@:2}
 			;;
 		stop)
-			di::not_implemented $1
+			di::help::not_implemented $1
 			;;
 		rm)
 			di::redis::rm ${@:2}
 			;;
 		clear)
-			di::not_implemented $1
+			di::help::not_implemented $1
 			;;
 
 		*)

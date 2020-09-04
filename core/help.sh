@@ -81,6 +81,10 @@ function di::help::header() {
 	fi
 }
 
+function di::help::not_implemented() {
+	di::log::warn "NOT IMPLEMENTED: $1"
+}
+
 function di::help::unknown_command() {
 	di::log::error "UNKNOWN COMMAND: $@"
 }

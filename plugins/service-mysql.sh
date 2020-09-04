@@ -61,7 +61,7 @@ function di::mysql::run() {
 			di::mysql::rm ${@:2}
 			;;
 		db)
-			di::not_implemented $1
+			di::help::not_implemented $1
 			;;
 		*)
 			di::unknown_command mysql $1
