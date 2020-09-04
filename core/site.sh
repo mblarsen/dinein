@@ -47,7 +47,6 @@ function di::site::generate() {
 	local SITE=$2
 	local ROOT=$3
 	local HOST=$4
-	# TODO deal with root
 	cat <<TEMPLATE > ${FILE_PATH}
 https://$SITE {
     root * $ROOT 
