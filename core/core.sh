@@ -113,7 +113,7 @@ function di::core::run() {
 			di::help::not_implemented $CMD
 			;;
 		"ps")
-			di::ps ${DINEIN_DOCKER_PREFIX}
+			di::docker::ps ${DINEIN_DOCKER_PREFIX}
 			;;
 		"list")
 			di::log::header "Plugins:"
