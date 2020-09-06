@@ -65,15 +65,14 @@ function di::mysql::db::drop()
 	di::log::success "Database dropped"
 }
 
-function di::mysql::shell()
-{
+function di::mysql::shell() {
 	NAME=${1:-"mysql"}
 	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
 	docker exec -it $CONTAINER_NAME bash
 }
 
 function di::mysql::help::add() {
-	di::help::add "mysql db:create" "name=mysql database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
+	di::help::add "mysql db:create" "name=mysql database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}. Creates a user by the same name."
 	di::help::add "mysql db:drop" "name=mysql database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
 }
 
