@@ -14,7 +14,7 @@ function di::laravel::unlink() {
 	di::backend::unlink $@
 }
 
-function di::laravel::add_help() {
+function di::laravel::help::add() {
 	di::help::add "laravel link" "[name] [site] [backend] [root]" "Link a site. Uses .dinein for defaults."
 	di::help::add "laravel unlink" "name" "Remove a new website. Uses .dinein for defaults."
 }

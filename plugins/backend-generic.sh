@@ -35,7 +35,7 @@ function di::backend::unlink() {
 	di::log "Removed site"
 }
 
-function di::backend::add_help() {
+function di::backend::help::add() {
 	di::help::add "php link" "[name] [site] [backend] [root]" "Link a site. Uses .dinein for defaults."
 	di::help::add "php unlink" "name" "Remove a new website. Uses .dinein for defaults."
 }

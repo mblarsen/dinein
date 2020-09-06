@@ -39,7 +39,7 @@ function di::mongo::rm() {
 	di::docker::rm $CONTAINER_NAME
 }
 
-function di::mongo::add_help() {
+function di::mongo::help::add() {
 	di::help::add "mongo db" "name=mongo database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
 }
 

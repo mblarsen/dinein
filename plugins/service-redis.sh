@@ -45,7 +45,7 @@ function di::redis::rm() {
 	di::docker::rm $CONTAINER_NAME
 }
 
-function di::redis::add_help() {
+function di::redis::help::add() {
 	di::help::add "redis clear" "name=redis" "Clear the cache."
 }
 

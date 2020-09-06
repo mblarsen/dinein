@@ -41,8 +41,8 @@ function di::help() {
 	echo ""
 
 	for PLUGIN in ${PLUGINS[@]}; do
-		if type "di::${PLUGIN}::add_help" &> /dev/null; then
-			"di::${PLUGIN}::add_help"
+		if type "di::${PLUGIN}::help::add" &> /dev/null; then
+			"di::${PLUGIN}::help::add"
 		fi
 	done
 }
