@@ -62,8 +62,8 @@ function di::core::init() {
 	fi
 
 	di::log ""
-	di::log::header "Creating .dinein project file. Edit it and then run 'up'."
-	di::log::header "You can see list of services by running 'dinein list'"
+	di::log::em "Creating .dinein project file. Edit it and then run 'up'."
+	di::log::em "You can see list of services by running 'dinein list'"
 	di::log ""
 	di::log "  .dinein"
 
