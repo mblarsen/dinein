@@ -57,7 +57,7 @@ function di::core::load_plugins() {
 
 function di::core::init() {
 	if [ -f "$(pwd)/.dinein" ]; then
-		di::log "Project file already exists in directory!"
+		di::log::warn "Project file already exists in directory!"
 		exit 1
 	fi
 
