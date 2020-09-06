@@ -83,7 +83,7 @@ function di::core::up() {
 	di::help::header "${DINEIN_PROJECT}"
 
 	for SERVICE in ${DINEIN_SERVICES[@]}; do
-		PLUGIN_INIT="di::${SERVICE}::init"
+		PLUGIN_INIT="di::${SERVICE}::up"
 		if type $PLUGIN_INIT &> /dev/null; then
 			$PLUGIN_INIT
 		fi

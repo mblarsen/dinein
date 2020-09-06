@@ -43,7 +43,7 @@ function di::mongo::add_help() {
 	di::help::add "mongo db" "name=mongo database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
 }
 
-function di::mongo::init() {
+function di::mongo::up() {
 	di::log::header "MongoDB"
 	di::mongo::add
 	if [ -z $DINEIN_PROJECT ]; then

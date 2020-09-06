@@ -49,7 +49,7 @@ function di::redis::add_help() {
 	di::help::add "redis clear" "name=redis" "Clear the cache."
 }
 
-function di::redis::init() {
+function di::redis::up() {
 	di::log::header "Redis"
 	di::redis::add
 }

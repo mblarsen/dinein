@@ -38,7 +38,7 @@ function di::mailhog::rm() {
 	di::docker::rm $CONTAINER_NAME
 }
 
-function di::mailhog::init() {
+function di::mailhog::up() {
 	di::log::header "Mailhog"
 	di::mailhog::add
 }
