@@ -43,16 +43,43 @@ function di::mysql::rm() {
 	di::docker::rm $CONTAINER_NAME
 }
 
-function di::mysql::add_help() {
-	di::help::add "mysql db" "name=mysql database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
+function di::mysql::db::create()
+{
+	NAME=${1:-"mysql"}
+	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
+	DB_NAME=${2:-$DINEIN_PROJECT}
+	di::log::em "Creating database $DB_NAME on $CONTAINER_NAME"
+	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "CREATE USER IF NOT EXISTS '$DB_NAME'@'localhost' IDENTIFIED BY 'dinein';"
+	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_NAME'@'localhost';;"
+	di::log::success "Database created"
 }
 
-function di::mysql::init() {
+function di::mysql::db::drop()
+{
+	NAME=${1:-"mysql"}
+	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
+	DB_NAME=${2:-$DINEIN_PROJECT}
+	di::log::em "Removing database $DB_NAME on $CONTAINER_NAME"
+	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "DROP DATABASE IF EXISTS $DB_NAME;"
+	di::log::success "Database dropped"
+}
+
+function di::mysql::shell()
+{
+	NAME=${1:-"mysql"}
+	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
+	docker exec -it $CONTAINER_NAME bash
+}
+
+function di::mysql::help::add() {
+	di::help::add "mysql db:create" "name=mysql database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
+	di::help::add "mysql db:drop" "name=mysql database=\$DINEIN_PROJECT" "Create a db with name ${TBLU}database${TOFF} in the server ${TBLU}name${TOFF}."
+}
+
+function di::mysql::up() {
 	di::log::header "MySQL"
 	di::mysql::add
-	if [ -z $DINEIN_PROJECT ]; then
-		echo "Create database"
-	fi
 }
 
 function di::mysql::run() {
@@ -67,8 +94,14 @@ function di::mysql::run() {
 		rm)
 			di::mysql::rm ${@:2}
 			;;
-		db)
-			di::help::not_implemented $1
+		shell)
+			di::mysql::shell ${@:2}
+			;;
+		db:create)
+			di::mysql::db::create ${@:2}
+			;;
+		db:drop)
+			di::mysql::db::drop ${@:2}
 			;;
 		*)
 			di::help::unknown_command mysql $@
