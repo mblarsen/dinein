@@ -50,8 +50,8 @@ function di::mysql::db::create()
 	DB_NAME=${2:-$DINEIN_PROJECT}
 	di::log::em "Creating database $DB_NAME on $CONTAINER_NAME"
 	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "CREATE USER IF NOT EXISTS '$DB_NAME'@'localhost' IDENTIFIED BY 'dinein';"
-	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_NAME'@'localhost';;"
+	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "CREATE USER IF NOT EXISTS '$DB_NAME'@'%' IDENTIFIED BY 'dinein';"
+	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_NAME'@'%';"
 	di::log::success "Database created"
 }
 
