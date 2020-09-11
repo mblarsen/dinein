@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function di::site::caddy::status() {
-	echo $(curl -o -I -L -s -w "%{http_code}" http://127.0.0.1:2019/config/)
+	echo $(curl -o -L -s -w "%{http_code}" http://127.0.0.1:2019/config/)
 }
 
 # Set up caddy
