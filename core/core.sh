@@ -132,6 +132,9 @@ function di::core::run() {
 			CADDY_STATUS=$(di::site::caddy::status)
 			if [[ "$CADDY_STATUS" != "200" ]]; then
 				di::site::caddy::start
+			else
+				di::log ""
+				di::log::warn "Caddy is already running"
 			fi
 			;;
 		"down")
@@ -152,7 +155,6 @@ function di::core::run() {
 			di::log::header "Plugins:"
 			for PLUGIN in ${PLUGINS[@]}; do
 				di::log $PLUGIN
-
 			done
 			;;
 		"config")

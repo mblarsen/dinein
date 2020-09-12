@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function di::site::caddy::status() {
-	echo $(curl -o -L -s -w "%{http_code}" http://127.0.0.1:2019/config/)
+	echo $(curl -o /dev/null -L -s -w "%{http_code}" http://127.0.0.1:2019/config/)
 }
 
 # Set up caddy
@@ -33,7 +33,6 @@ function di::site::caddy::start() {
 		di::log ""
 		di::log::em "You can abort the script and enter it yourself,"
 		di::log::em "or enter your sudo password below (if needed)."
-		di::log ""
 	fi
 	set -e
 	$CMD > /dev/null 2>&1
