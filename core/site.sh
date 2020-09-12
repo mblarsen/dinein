@@ -16,7 +16,9 @@ function di::site::caddy::start() {
 	CADDY_FILE="$(di::core::create_config_dir caddy)/Caddyfile"
 	CMD="sudo caddy start --config $CADDY_FILE --watch"
 
-	if [ $(timeout 2 sudo id > /dev/null) ]; then
+	set +e
+	sudo -n -v 2> /dev/null
+	if [[ "${?}" != "0" ]]; then
 		di::log ""
 		di::log::em "Dine-in is using Caddy to serve files and manage certificates."
 		di::log ""
@@ -33,6 +35,7 @@ function di::site::caddy::start() {
 		di::log::em "or enter your sudo password below (if needed)."
 		di::log ""
 	fi
+	set -e
 	$CMD > /dev/null 2>&1
 	di::log ""
 	di::log::success "Started Caddy"
