@@ -3,22 +3,22 @@
 A lightweight _local_ development tool that helps you manage docker services
 and website configurations.
 
-* Lightweight; just a bunch of structured shell scrips
-* Hosting and SSL/TLS using Caddy; One server for all of your projects.
-* Services provided by docker. One container per service for all of your
-  projects by default. But easy to add more instances.  For example, if you
+- Lightweight; just a bunch of structured shell scrips
+- Hosting and SSL/TLS using Caddy; One server for all of your projects.
+- Services provided by docker. One container per service for all of your
+  projects by default. But easy to add more instances. For example, if you
   need to use both MySQL 5.7 and 8.
-* Write plugins to add more services. Comes with: mysql, mongo, redis, mailhog.
+- Write plugins to add more services. Comes with: mysql, mongo, redis, mailhog.
   A plugin is but a few lines of code that you can mostly copy from docker
   documentation.
-* Use service plugins to add functionality, e.g. to clear redit cache or create a new
+- Use service plugins to add functionality, e.g. to clear redit cache or create a new
   database (not the server)
-* Use backend plugins to link and unlink websites. Comes with a generic backend
+- Use backend plugins to link and unlink websites. Comes with a generic backend
   and a laravel plugin.
-* Bring your own language. Use [phpenv](https://github.com/phpenv/phpenv),
-  [nvm](https://github.com/nvm-sh/nvm) and so on to manage your language
+- Bring your own language. Use [anydev](https://github.com/anyenv/anyenv) or
+  similar to manage your language environment: php, ruby, node, etc.
   enviroment.
-* Works on Mac and Linux
+- Works on Mac and Linux
 
 # Install
 
@@ -60,9 +60,9 @@ service containers configured. The containers will be namespaced `dinein_` to
 easily see there state use: `dine ps`.
 
 > Dine-in isn't just for PHP/Larvel, it can be used with any backend as it
-really only provides the web-server and the services. You bring your own
-language enviroment. Personally, I'm a big fan of phpenv, nvm, and all these
-types of tools.
+> really only provides the web-server and the services. You bring your own
+> language enviroment. Personally, I'm a big fan of phpenv, nvm, and all these
+> types of tools.
 
 Anyway, in case you have Larvel application first you must link the site using
 the 'laravel' backend plugin:
@@ -127,4 +127,3 @@ the name.
 
 @egoist had the same idea with his [doko](https://github.com/egoist/doko/)
 package. A Go implementation.
-
