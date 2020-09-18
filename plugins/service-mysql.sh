@@ -50,9 +50,12 @@ function di::mysql::db::create()
 	DB_NAME=${2:-$DINEIN_PROJECT}
 	di::log::em "Creating database $DB_NAME on $CONTAINER_NAME"
 	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "CREATE USER IF NOT EXISTS '$DB_NAME'@'%' IDENTIFIED BY 'dinein';"
+	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "CREATE USER IF NOT EXISTS '$DB_NAME'@'%' IDENTIFIED BY '$DB_NAME';"
 	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_NAME'@'%';"
 	di::log::success "Database created"
+	di::log::dim "USER: $DB_NAME"
+	di::log::dim "DATABASE: $DB_NAME"
+	di::log::dim "PASSWORD: $DB_NAME"
 }
 
 function di::mysql::db::drop()
@@ -62,6 +65,8 @@ function di::mysql::db::drop()
 	DB_NAME=${2:-$DINEIN_PROJECT}
 	di::log::em "Removing database $DB_NAME on $CONTAINER_NAME"
 	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "DROP DATABASE IF EXISTS $DB_NAME;"
+	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "DROP USER IF EXISTS '$DB_NAME'@'%';"
+	docker exec -it $CONTAINER_NAME mysql -uroot -pdinein -e "FLUSH PRIVILEGES;"
 	di::log::success "Database dropped"
 }
 
