@@ -30,7 +30,7 @@ npx degit https://github.com/mblarsen/dinein.git
 
 # Usage
 
-![usage](https://github.com/mblarsen/dinein/blob/master/usage.png)
+![usage](demo.gif)
 
 Alias dine for easy usage:
 
