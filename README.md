@@ -22,21 +22,25 @@ and website configurations.
 
 # Install
 
-```
-npx degit https://github.com/mblarsen/dinein.git
+Recommended — using [zplug](https://github.com/zplug/zplug):
+
+```shell
+zplug "mblarsen/dinein", as:command, use:"dinein.sh", rename-to:"dine"
 ```
 
-…or just clone the repository.
+And use the `dine` command right away.
+
+Otherwise just clone the repo and create an alias:
+
+```shell
+alias dine="/path/to/dinein/dinein.sh"
+```
 
 # Usage
 
 ![usage](demo.gif)
 
 Alias dine for easy usage:
-
-```shell
-alias dine="/path/to/dinein/dinein.sh"
-```
 
 Initialize your project:
 
