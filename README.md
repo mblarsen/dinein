@@ -128,6 +128,3 @@ The tool is similar to Tighten's
 In fact I decided to clean up the scripts that I've used for years into this
 repo after I saw the announcement of Takeout. You may have spotted the pun in
 the name.
-
-@egoist had the same idea with his [doko](https://github.com/egoist/doko/)
-package. A Go implementation.
