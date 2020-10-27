@@ -36,8 +36,8 @@ function di::backend::unlink() {
 }
 
 function di::backend::help::add() {
-	di::help::add "php link" "[name] [site] [backend] [root]" "Link a site. Uses .dinein for defaults."
-	di::help::add "php unlink" "name" "Remove a new website. Uses .dinein for defaults."
+	di::help::add "backend link" "[name] [site] [backend] [root]" "Link a site. Uses .dinein for defaults."
+	di::help::add "backend unlink" "name" "Remove a new website. Uses .dinein for defaults."
 }
 
 function di::backend::run() {
@@ -49,7 +49,7 @@ function di::backend::run() {
 			di::backend::unlink ${@:2}
 			;;
 		*)
-			di::help::unknown_command php $1
+			di::help::unknown_command backend $1
 			;;
 	esac
 }
