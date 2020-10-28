@@ -11,7 +11,8 @@ DINEIN_CONFIG_DIR=${DINEIN_CONFIG_DIR:-$HOME/.config/dinein}
 DINEIN_DOCKER_PREFIX=${DINEIN_DOCKER_PREFIX:-dinein}
 
 # Interally used to know where the code lives
-DINEIN_ROOT=$(dirname "$(readlink -f "$0")")
+FILE_REAL_PATH=$(perl -MCwd -e "print Cwd::abs_path shift" "$0")
+DINEIN_ROOT=$(dirname "$FILE_REAL_PATH")
 # Interally used to know where the plugins lives
 PLUGIN_DIR=$DINEIN_ROOT/plugins
 
