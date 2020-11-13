@@ -2,23 +2,20 @@
 
 function di::core::check_requirements() {
 	FAIL=0
-	if ! type jq > /dev/null; then
-		echo ""
+	if ! command -v jq > /dev/null; then
 		FAIL=1
 		di::log::warn "jq is not installed"
 		di::log "${TGRN}$ ${TOFF}${TBLD}apt install jq ${TOFF}${TGRY}# or"
 		di::log "${TGRN}$ ${TOFF}${TBLD}brew install jq"
 	fi
 
-	if ! type docker > /dev/null; then
-		echo ""
+	if ! command -v docker > /dev/null; then
 		FAIL=1
 		di::log::warn "docker is not installed"
 		di::log "Visit ${TBLD}${TUNL}https://docs.docker.com/get-docker/${TOFF} to install."
 	fi
 
-	if ! type caddy > /dev/null; then
-		echo ""
+	if ! command -v caddy > /dev/null; then
 		FAIL=1
 		di::log::warn "caddy is not installed"
 		di::log "${TGRN}$ ${TOFF}${TBLD}apt install caddy ${TOFF}${TGRY}# or"
@@ -84,7 +81,7 @@ function di::core::up() {
 
 	for SERVICE in ${DINEIN_SERVICES[@]}; do
 		PLUGIN_INIT="di::${SERVICE}::up"
-		if type $PLUGIN_INIT &> /dev/null; then
+		if command -v $PLUGIN_INIT &> /dev/null; then
 			$PLUGIN_INIT
 		fi
 	done
