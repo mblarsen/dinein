@@ -8,6 +8,7 @@ if [[ "$TERM" != "dumb" ]] && [[ "$TERM" != "" ]]; then
     TRED=$(tput setaf 1)
     TBLU=$(tput setaf 4)
     TWHT=$(tput setaf 7)
+    TGRY=$(tput setaf 8)
     TOFF=$(tput sgr0)
     TDIM=$(tput dim)
     TBND=$TBLD

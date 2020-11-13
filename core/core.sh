@@ -6,8 +6,8 @@ function di::core::check_requirements() {
 		echo ""
 		FAIL=1
 		di::log::warn "jq is not installed"
-		di::log "${TGRN}$ ${TOFF}${TBLD}apt install jq${TOFF} or"
-		di::log "${TGRN}$ ${TOFF}${TBLD}brew install jq${TOFF} to install."
+		di::log "${TGRN}$ ${TOFF}${TBLD}apt install jq ${TOFF}${TGRY}# or"
+		di::log "${TGRN}$ ${TOFF}${TBLD}brew install jq"
 	fi
 
 	if ! type docker > /dev/null; then
@@ -21,8 +21,8 @@ function di::core::check_requirements() {
 		echo ""
 		FAIL=1
 		di::log::warn "caddy is not installed"
-		di::log "${TGRN}$ ${TOFF}${TBLD}apt install caddy${TOFF} or"
-		di::log "${TGRN}$ ${TOFF}${TBLD}brew install caddy${TOFF} to install."
+		di::log "${TGRN}$ ${TOFF}${TBLD}apt install caddy ${TOFF}${TGRY}# or"
+		di::log "${TGRN}$ ${TOFF}${TBLD}brew install caddy"
 	fi
 
 	if [ $FAIL -eq 1 ]; then
