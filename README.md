@@ -1,7 +1,8 @@
 # Dine-in 🏠
 
 A lightweight _local_ development tool that helps you manage docker services
-and website configurations.
+and website configurations using Caddy. Perfectly paird with dnsmasq to get
+`https://anysite.test` running quickly.
 
 - Lightweight; just a bunch of structured shell scrips
 - Hosting and SSL/TLS using Caddy; One server for all of your projects.
@@ -13,28 +14,30 @@ and website configurations.
   documentation.
 - Use service plugins to add functionality, e.g. to clear redit cache or create a new
   database (not the server)
-- Use backend plugins to link and unlink websites. Comes with a generic backend
+- Use backend plugins to link and unlink websites. Comes with a generic
   and a laravel plugin.
-- Bring your own language. Use [anydev](https://github.com/anyenv/anyenv) or
+- Bring your own language. Use [`anydev`](https://github.com/anyenv/anyenv) or
   similar to manage your language environment: php, ruby, node, etc.
-  enviroment.
-- Works on Mac and Linux
+  enviroment. Personally I use
+  [`phpenv-installer`](https://github.com/phpenv/phpenv-installer) as I work a
+  lot with PHP.
+- Tested to work on both Mac and Linux
 
 # Install
 
-Recommended — using [zplug](https://github.com/zplug/zplug):
+Clone somewhere and create an alias, e.g.:
+
+```shell
+alias dine="/path/to/dinein/dinein.sh"
+```
+
+Or use with [zplug](https://github.com/zplug/zplug):
 
 ```shell
 zplug "mblarsen/dinein", as:command, use:"dinein.sh", rename-to:"dine"
 ```
 
-And use the `dine` command right away.
-
-Otherwise just clone the repo and create an alias:
-
-```shell
-alias dine="/path/to/dinein/dinein.sh"
-```
+Now you can start using the `dine` command.
 
 # Usage
 
@@ -74,17 +77,27 @@ the 'laravel' backend plugin:
 ```shell
 # Link based on .dinein
 dine laravel link
-# ... or without
-dine laravel my-project my-site.test 127.0.0.1:8000 $(pwd}/public
+
+# or manually
+dine laravel my-project my-site.test 127.0.0.1:8000 $(pwd)/public
 ```
 
-> All the host plugins does is create Caddyfile configurations.
+> All the host plugins does is create Caddyfile configurations and
+> automatically reloads Caddy.
 
-Once you've linked the site you start your application as you normally would:
+Once you've linked the site you run your application:
 
 ```
+# Laravel
 php artisan serve
+
+# Node
+node index.js
 ```
+
+> Note: I've set up dnsmasq to automatically `.test` to `127.0.0.1` that way
+> you don't have to update `/etc/hosts` every time you start working on a new
+> site. (Thanks to @jamie-brown for pointing that out to me.)
 
 ## Multiple instances
 
@@ -94,6 +107,7 @@ defaults, so you if you do not need that most commands require no arguments.
 ```shell
 # Creates a container named 'dinein_mysql' from the 'latest' tag on port '3306'
 dine mysql add
+
 # Creates a container named 'dinein_mysql57' from the '5.7' tag on port '3307'
 dine mysql add mysql57 5.7 3307
 ```
@@ -111,14 +125,14 @@ Similarly you can link any number of sites, using the hosting plugins.
 # reverse_proxy to 127.0.0.1:8000 with a projcet name of DINEIN_PROJECT
 # as read from .dinein
 dine laravel link
+
 # Creates a webserver config for example-project.com and the name `my-project2`
 # and reverse_proxy to 192.168.0.4:3000 and served from the 'static' dir.
 dine laravel my-project2 example-project.com 192.168.0.4:3000 $(pwd)/static
 ```
 
-Note: the 'laravel' backend plugin is just a thin shell on over the generic
-backend plugin, called backend, when it comes to liking. Use this plugin if you
-are serving anything else.
+> Note: the 'laravel' backend plugin is just a thin shell over the generic
+> backend plugin (named backend).
 
 # Prior art
 
