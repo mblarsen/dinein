@@ -28,9 +28,9 @@ TEMPLATE
 	else
 		di::docker::start $CONTAINER_NAME
 	fi
-	di::log::dim "HOST: 127.0.0.1:$PORT ($VERSON)"
-	di::log::dim "CONFIG: $REDIS_CONFIG"
-	di::log::dim "PASSWORD: dinein"
+	di::log::dim "Host: 127.0.0.1:$PORT ($VERSON)"
+	di::log::dim "Password: dinein"
+	di::log::dim "Shared config: $REDIS_CONFIG"
 }
 
 function di::redis::stop() {
