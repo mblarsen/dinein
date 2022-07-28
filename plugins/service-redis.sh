@@ -11,6 +11,7 @@ function di::redis::add() {
 	PORT=${3:-6379}
 	CONTAINER_NAME=${DINEIN_DOCKER_PREFIX}_$NAME
 	local REDIS_CONFIG="$(di::core::create_config_dir redis)/redis.conf"
+	local REDIS_DATA="$(di::core::create_config_dir redis/data)"
 	cat <<-TEMPLATE > "$REDIS_CONFIG"
 port 6379
 bind 0.0.0.0
@@ -22,6 +23,7 @@ TEMPLATE
 			--name $CONTAINER_NAME \
 			-p $PORT:6379 \
 			-v "$REDIS_CONFIG:/usr/local/etc/redis/redis.conf" \
+			-v "$REDIS_DATA:/usr/local/etc/redis/data/" \
 			-d redis:$VERSON \
 			redis-server /usr/local/etc/redis/redis.conf
 		di::log::success "Created container"
