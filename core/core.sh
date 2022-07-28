@@ -124,6 +124,9 @@ function di::core::run() {
 		"caddy:status")
 			di::site::caddy::status
 			;;
+		"caddy:stop")
+			di::site::caddy::stop
+			;;
 		"up")
 			di::core::up
 			CADDY_STATUS=$(di::site::caddy::status)
