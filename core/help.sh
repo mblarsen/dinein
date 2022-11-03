@@ -72,7 +72,7 @@ function di::help::header() {
 	MSG=${1:-"DINE-IN"}
 	if type figlet 2>&1 > /dev/null; then
 		echo -n $TEPH
-		figlet -tf slant "$MSG" | sed 's/^/   /'
+		figlet -f slant "$MSG" | sed 's/^/   /'
 		echo $TOFF
 	else
 		echo
